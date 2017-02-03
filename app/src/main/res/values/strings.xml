@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">RomajiConverterSample</string>
+    <string name="button_label">Go</string>
+
+    <string name="radio_group_label_system">Systems:</string>
+    <string name="radio_label_hepburn">Hepburn</string>
+    <string name="radio_label_kunrei">Kunrei-shiki</string>
+    <string name="radio_label_nihon">Nihon-shiki</string>
+
+    <string name="radio_group_label_type">Convert type:</string>
+    <string name="radio_label_kana_to_romaji">Kana to Romaji</string>
+    <string name="radio_label_romaji_to_kana">Romaji to Kana</string>
+
+    <string name="text_label_result">Conversion result</string>
 </resources>
