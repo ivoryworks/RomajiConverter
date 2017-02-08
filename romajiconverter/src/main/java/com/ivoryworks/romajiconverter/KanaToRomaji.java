@@ -11,9 +11,11 @@ public class KanaToRomaji {
     public static final int SYSTEM_NIHON = 2;
 
     Map mChokuMap;
+    Map mYouMap;
 
     public KanaToRomaji() {
         loadChokuOnTable();
+        loadYouOnTable();
     }
 
     public List<String> convert(final String str) {
@@ -52,20 +54,52 @@ public class KanaToRomaji {
             return romaList;    // Terminate
         }
 
-        // Choku-on
-        String fig = String.valueOf(str.charAt(index));
-        if (mChokuMap.containsKey(fig)) {
-            List<String> recRoma = convertHepburnRecursion(str, index + 1);
+        if (isYouOn(str, index)) {
+            // You-on
+            String youOn = str.substring(index, index + 2);
+            List<String> recRoma = convertHepburnRecursion(str, index + 2);
             if (recRoma.size() == 0) {
-                romaList.add((String) mChokuMap.get(fig));
+                romaList.add((String) mYouMap.get(youOn));
             } else {
                 for (String childStr : recRoma) {
-                    romaList.add(mChokuMap.get(fig) + childStr);
+                    romaList.add(mYouMap.get(youOn) + childStr);
+                }
+            }
+        } else {
+            // Choku-on
+            String fig = String.valueOf(str.charAt(index));
+            if (mChokuMap.containsKey(fig)) {
+                List<String> recRoma = convertHepburnRecursion(str, index + 1);
+                if (recRoma.size() == 0) {
+                    romaList.add((String) mChokuMap.get(fig));
+                } else {
+                    for (String childStr : recRoma) {
+                        romaList.add(mChokuMap.get(fig) + childStr);
+                    }
                 }
             }
         }
-
         return romaList;
+    }
+
+    private boolean isYouOn(final String str, int index) {
+        // 拗音は2文字必要
+        if ((str.length() - index) < 2) {
+            return false;
+        }
+        String c = String.valueOf(str.charAt(index));
+        String[] youUpper = {"き", "し", "ち", "に", "ひ", "み", "り", "ぎ", "じ", "ぢ", "び", "ぴ"};
+        for (String yu : youUpper) {
+            if (!yu.equals(c)) {
+                continue;
+            }
+            String c2 = String.valueOf(str.charAt(index + 1));
+            // You-on lower
+            if (c2.equals("ゃ") || c2.equals("ゅ") || c2.equals("ょ")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void loadChokuOnTable() {
@@ -89,6 +123,22 @@ public class KanaToRomaji {
         mChokuMap = new HashMap<>();
         for (int i = 0; i < chokuKana.length; i++) {
             mChokuMap.put(chokuKana[i], chokuRoma[i]);
+        }
+    }
+
+    private void loadYouOnTable() {
+        // 拗音 
+        String[] youKana = {"きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ",
+                            "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ",
+                            "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ",
+                            "ぢゃ", "ぢゅ", "ぢょ", "びゃ", "びゅ", "びょ", "ぴゃ", "ぴゅ", "ぴょ"};
+        String[] youRoma = {"kya", "kyu", "kyo", "sha", "shu", "sho", "cha", "chu", "cho",
+                            "nya", "nyu", "nyo", "hya", "hyu", "hyo", "mya", "myu", "myo",
+                            "rya", "ryu", "ryo", "gya", "gyu", "gyo", "ja", "ju", "jo",
+                            "ja", "ju", "jo", "bya", "byu", "byo", "pya", "pyu", "pyo"};
+        mYouMap = new HashMap<>();
+        for (int i = 0; i < youKana.length; i++) {
+            mYouMap.put(youKana[i], youRoma[i]);
         }
     }
 }
