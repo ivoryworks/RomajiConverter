@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 public class KanaToRomajiHepburnTest {
@@ -14,26 +13,15 @@ public class KanaToRomajiHepburnTest {
      */
     @Test
     public void converterKana2RomajiHepburnYouOn() throws Exception {
-        List<String> result;
-        KanaToRomaji k2r = new KanaToRomaji();
-
         // sha,shu,sho
-        result = k2r.convert("しゃしゅしょ", KanaToRomaji.SYSTEM_HEPBURN);
-        assertTrue(result.size() == 1);
-        assertEquals(result.get(0), "shashusho");
+        assertTrue(convertChecker("しゃしゅしょ", new String[]{"shashusho"}));
 
         // cha,chu,cho
-        result = k2r.convert("ちゃちゅちょ", KanaToRomaji.SYSTEM_HEPBURN);
-        assertTrue(result.size() == 1);
-        assertEquals(result.get(0), "chachucho");
+        assertTrue(convertChecker("ちゃちゅちょ", new String[]{"chachucho"}));
 
         // ja,ju,jo
-        result = k2r.convert("じゃじゅじょ", KanaToRomaji.SYSTEM_HEPBURN);
-        assertTrue(result.size() == 1);
-        assertEquals(result.get(0), "jajujo");
-        result = k2r.convert("ぢゃぢゅぢょ", KanaToRomaji.SYSTEM_HEPBURN);
-        assertTrue(result.size() == 1);
-        assertEquals(result.get(0), "jajujo");
+        assertTrue(convertChecker("じゃじゅじょ", new String[]{"jajujo"}));
+        assertTrue(convertChecker("ぢゃぢゅぢょ", new String[]{"jajujo"}));
     }
 
     /**
@@ -42,26 +30,32 @@ public class KanaToRomajiHepburnTest {
      */
     @Test
     public void converterKana2RomajiHepburnChokuOn() throws Exception {
-        List<String> result;
-        KanaToRomaji k2r = new KanaToRomaji();
         // shi
-        result = k2r.convert("すし", KanaToRomaji.SYSTEM_HEPBURN);
-        assertTrue(result.size() == 1);
-        assertEquals(result.get(0), "sushi");
+        assertTrue(convertChecker("すし", new String[]{"sushi"}));
 
         // tsu,chi
-        result = k2r.convert("つち", KanaToRomaji.SYSTEM_HEPBURN);
-        assertTrue(result.size() == 1);
-        assertEquals(result.get(0), "tsuchi");
+        assertTrue(convertChecker("ちつ", new String[]{"chitsu"}));
 
         // ji
-        result = k2r.convert("じ", KanaToRomaji.SYSTEM_HEPBURN);
-        assertTrue(result.size() == 1);
-        assertEquals(result.get(0), "ji");
+        assertTrue(convertChecker("じ", new String[]{"ji"}));
 
         // ji,zu
-        result = k2r.convert("ぢづ", KanaToRomaji.SYSTEM_HEPBURN);
-        assertTrue(result.size() == 1);
-        assertEquals(result.get(0), "jizu");
+        assertTrue(convertChecker("ぢづ", new String[]{"jizu"}));
+    }
+
+    private boolean convertChecker(String kana, String[] romajis) {
+        List<String> result;
+        KanaToRomaji k2r = new KanaToRomaji();
+
+        result = k2r.convert(kana, KanaToRomaji.SYSTEM_HEPBURN);
+        if (result.size() != romajis.length) {
+            return false;
+        }
+        for (int i = 0; i < romajis.length; i++) {
+            if (!result.get(i).equals(romajis[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 }
