@@ -202,7 +202,7 @@ public class KanaToRomaji {
     private void loadChokuOnKunreiTable() {
         // Choku-on
         String[] chokuKana = {"し", "じ", "ち", "つ", "ぢ", "づ", "ふ", "ゐ", "ゑ", "を"};
-        String[] chokuRoma = {"si", "zi", "ti", "tu", "di", "du", "hu", "wi", "we", "wo"};
+        String[] chokuRoma = {"si", "zi", "ti", "tu", "zi", "zu", "hu", "i", "e", "o"};
         mChokuKunreiMap = new HashMap<>();
         for (int i = 0; i < chokuKana.length; i++) {
             mChokuKunreiMap.put(chokuKana[i], chokuRoma[i]);

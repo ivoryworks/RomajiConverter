@@ -20,13 +20,13 @@ public class KanaToRomajiHepburnTest {
         assertTrue(convertChecker("ちつ", new String[]{"titu"}, KanaToRomaji.SYSTEM_KUNREI));
 
         // di, du
-        assertTrue(convertChecker("ぢづ", new String[]{"didu"}, KanaToRomaji.SYSTEM_KUNREI));
+        assertTrue(convertChecker("ぢづ", new String[]{"zizu"}, KanaToRomaji.SYSTEM_KUNREI));
 
         // hu
         assertTrue(convertChecker("ふ", new String[]{"hu"}, KanaToRomaji.SYSTEM_KUNREI));
 
         // wi, we, wo
-        assertTrue(convertChecker("ゐゑを", new String[]{"wiwewo"}, KanaToRomaji.SYSTEM_KUNREI));
+        assertTrue(convertChecker("ゐゑを", new String[]{"ieo"}, KanaToRomaji.SYSTEM_KUNREI));
     }
 
     /**
