@@ -63,46 +63,30 @@ public class KanaToRomaji {
             return romaList;    // Terminate
         }
 
+        String on;
+        List<String> recRoma;
+        Map[] mapSet;
         if (isYouOn(str, index)) {
             // You-on
-            String youOn = str.substring(index, index + 2);
-            List<String> recRoma = convertHepburnRecursion(str, index + 2);
-            if (mYouBaseMap.containsKey(youOn)) {
-                if (recRoma.size() == 0) {
-                    romaList.add((String) mYouBaseMap.get(youOn));
-                } else {
-                    for (String childStr : recRoma) {
-                        romaList.add(mYouBaseMap.get(youOn) + childStr);
-                    }
-                }
-            } else if (mYouHepburnMap.containsKey(youOn)) {
-                if (recRoma.size() == 0) {
-                    romaList.add((String) mYouHepburnMap.get(youOn));
-                } else {
-                    for (String childStr : recRoma) {
-                        romaList.add(mYouHepburnMap.get(youOn) + childStr);
-                    }
-                }
-            }
+            on = str.substring(index, index + 2);
+            recRoma = convertHepburnRecursion(str, index + 2);
+            mapSet = new Map[]{mYouBaseMap, mYouHepburnMap};
         } else {
             // Choku-on
-            String fig = String.valueOf(str.charAt(index));
-            List<String> recRoma = convertHepburnRecursion(str, index + 1);
-            if (mChokuBaseMap.containsKey(fig)) {
-                if (recRoma.size() == 0) {
-                    romaList.add((String) mChokuBaseMap.get(fig));
-                } else {
-                    for (String childStr : recRoma) {
-                        romaList.add(mChokuBaseMap.get(fig) + childStr);
-                    }
-                }
-            } else if (mChokuHepburnMap.containsKey(fig)) {
-                if (recRoma.size() == 0) {
-                    romaList.add((String) mChokuHepburnMap.get(fig));
-                } else {
-                    for (String childStr : recRoma) {
-                        romaList.add(mChokuHepburnMap.get(fig) + childStr);
-                    }
+            on = str.substring(index, index + 1);
+            recRoma = convertHepburnRecursion(str, index + 1);
+            mapSet = new Map[]{mChokuBaseMap, mChokuHepburnMap};
+        }
+
+        for (Map map : mapSet) {
+            if (!map.containsKey(on)) {
+                continue;
+            }
+            if (recRoma.size() == 0) {
+                romaList.add((String) map.get(on));
+            } else {
+                for (String childStr : recRoma) {
+                    romaList.add(map.get(on) + childStr);
                 }
             }
         }
@@ -125,46 +109,30 @@ public class KanaToRomaji {
             return romaList;    // Terminate
         }
 
+        String on;
+        List<String> recRoma;
+        Map[] mapSet;
         if (isYouOn(str, index)) {
             // You-on
-            String youOn = str.substring(index, index + 2);
-            List<String> recRoma = convertKunreiRecursion(str, index + 2);
-            if (mYouBaseMap.containsKey(youOn)) {
-                if (recRoma.size() == 0) {
-                    romaList.add((String) mYouBaseMap.get(youOn));
-                } else {
-                    for (String childStr : recRoma) {
-                        romaList.add(mYouBaseMap.get(youOn) + childStr);
-                    }
-                }
-            } else if (mYouKunreiMap.containsKey(youOn)) {
-                if (recRoma.size() == 0) {
-                    romaList.add((String) mYouKunreiMap.get(youOn));
-                } else {
-                    for (String childStr : recRoma) {
-                        romaList.add(mYouKunreiMap.get(youOn) + childStr);
-                    }
-                }
-            }
+            on = str.substring(index, index + 2);
+            recRoma = convertKunreiRecursion(str, index + 2);
+            mapSet = new Map[]{mYouBaseMap, mYouKunreiMap};
         } else {
             // Choku-on
-            String fig = String.valueOf(str.charAt(index));
-            List<String> recRoma = convertKunreiRecursion(str, index + 1);
-            if (mChokuBaseMap.containsKey(fig)) {
-                if (recRoma.size() == 0) {
-                    romaList.add((String) mChokuBaseMap.get(fig));
-                } else {
-                    for (String childStr : recRoma) {
-                        romaList.add(mChokuBaseMap.get(fig) + childStr);
-                    }
-                }
-            } else if (mChokuKunreiMap.containsKey(fig)) {
-                if (recRoma.size() == 0) {
-                    romaList.add((String) mChokuKunreiMap.get(fig));
-                } else {
-                    for (String childStr : recRoma) {
-                        romaList.add(mChokuKunreiMap.get(fig) + childStr);
-                    }
+            on = str.substring(index, index + 1);
+            recRoma = convertKunreiRecursion(str, index + 1);
+            mapSet = new Map[]{mChokuBaseMap, mChokuKunreiMap};
+        }
+
+        for (Map map : mapSet) {
+            if (!map.containsKey(on)) {
+                continue;
+            }
+            if (recRoma.size() == 0) {
+                romaList.add((String) map.get(on));
+            } else {
+                for (String childStr : recRoma) {
+                    romaList.add(map.get(on) + childStr);
                 }
             }
         }
