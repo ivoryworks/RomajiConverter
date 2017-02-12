@@ -17,6 +17,7 @@ public class KanaToRomaji {
     Map mYouBaseMap;
     Map mYouHepburnMap;
     Map mYouKunreiMap;
+    Map mYouNihonMap;
 
     public KanaToRomaji() {
         loadChokuOnBaseTable();
@@ -27,6 +28,7 @@ public class KanaToRomaji {
         loadYouOnBaseTable();
         loadYouOnHepburnTable();
         loadYouOnKunreiTable();
+        loadYouOnNihonTable();
     }
 
     public List<String> convert(final String str) {
@@ -166,7 +168,7 @@ public class KanaToRomaji {
             // You-on
             on = str.substring(index, index + 2);
             recRoma = convertNihonRecursion(str, index + 2);
-            mapSet = new Map[]{mYouBaseMap};
+            mapSet = new Map[]{mYouBaseMap, mYouNihonMap};
         } else {
             // Choku-on
             on = str.substring(index, index + 1);
@@ -312,6 +314,20 @@ public class KanaToRomaji {
         mYouKunreiMap = new HashMap<>();
         for (int i = 0; i < youKana.length; i++) {
             mYouKunreiMap.put(youKana[i], youRoma[i]);
+        }
+    }
+
+    /**
+     * 日本式拗音マップローディング
+     */
+    private void loadYouOnNihonTable() {
+        String[] youKana = {"しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "じゃ", "じゅ", "じょ",
+                "ぢゃ", "ぢゅ", "ぢょ"};
+        String[] youRoma = {"sya", "syu", "syo", "tya", "tyu", "tyo", "zya", "zyu", "zyo",
+                "dya", "dyu", "dyo"};
+        mYouNihonMap = new HashMap<>();
+        for (int i = 0; i < youKana.length; i++) {
+            mYouNihonMap.put(youKana[i], youRoma[i]);
         }
     }
 }

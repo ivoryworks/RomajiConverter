@@ -9,6 +9,24 @@ import static junit.framework.Assert.assertTrue;
 public class KanaToRomajiHepburnTest {
 
     /**
+     * かなtoローマ字 日本式 拗音変換
+     */
+    @Test
+    public void convertKana2RomajiNihonYouOn() {
+        // sya,syu,syo
+        assertTrue(convertChecker("しゃしゅしょ", new String[]{"syasyusyo"}, KanaToRomaji.SYSTEM_NIHON));
+
+        // tya,tyu,tyo
+        assertTrue(convertChecker("ちゃちゅちょ", new String[]{"tyatyutyo"}, KanaToRomaji.SYSTEM_NIHON));
+
+        // zya,zyu,zyo
+        assertTrue(convertChecker("じゃじゅじょ", new String[]{"zyazyuzyo"}, KanaToRomaji.SYSTEM_NIHON));
+
+        // dya,dyu,dyo
+        assertTrue(convertChecker("ぢゃぢゅぢょ", new String[]{"dyadyudyo"}, KanaToRomaji.SYSTEM_NIHON));
+    }
+
+    /**
      * かなtoローマ字 日本式 直音変換
      */
     @Test
