@@ -13,6 +13,7 @@ public class KanaToRomaji {
     Map mChokuBaseMap;
     Map mChokuHepburnMap;
     Map mChokuKunreiMap;
+    Map mChokuNihonMap;
     Map mYouBaseMap;
     Map mYouHepburnMap;
     Map mYouKunreiMap;
@@ -21,6 +22,8 @@ public class KanaToRomaji {
         loadChokuOnBaseTable();
         loadChokuOnHepburnTable();
         loadChokuOnKunreiTable();
+        loadChokuOnNihonTable();
+
         loadYouOnBaseTable();
         loadYouOnHepburnTable();
         loadYouOnKunreiTable();
@@ -40,6 +43,7 @@ public class KanaToRomaji {
                 strArray = converterKunrei(str);
                 break;
             case SYSTEM_NIHON:
+                strArray = converterNihon(str);
                 break;
             default:
                 break;
@@ -139,6 +143,52 @@ public class KanaToRomaji {
         return romaList;
     }
 
+    private List<String> converterNihon(final String str) {
+        List<String> strList = new ArrayList<>();
+        if (str == null || str.length() == 0) {
+            return strList;
+        }
+        strList = convertNihonRecursion(str, 0);
+
+        return strList;
+    }
+
+    private List<String> convertNihonRecursion(final String str, int index) {
+        List<String> romaList = new ArrayList<>();
+        if (str.length() == index) {
+            return romaList;    // Terminate
+        }
+
+        String on;
+        List<String> recRoma;
+        Map[] mapSet;
+        if (isYouOn(str, index)) {
+            // You-on
+            on = str.substring(index, index + 2);
+            recRoma = convertNihonRecursion(str, index + 2);
+            mapSet = new Map[]{mYouBaseMap};
+        } else {
+            // Choku-on
+            on = str.substring(index, index + 1);
+            recRoma = convertNihonRecursion(str, index + 1);
+            mapSet = new Map[]{mChokuBaseMap, mChokuNihonMap};
+        }
+
+        for (Map map : mapSet) {
+            if (!map.containsKey(on)) {
+                continue;
+            }
+            if (recRoma.size() == 0) {
+                romaList.add((String) map.get(on));
+            } else {
+                for (String childStr : recRoma) {
+                    romaList.add(map.get(on) + childStr);
+                }
+            }
+        }
+        return romaList;
+    }
+
     private boolean isYouOn(final String str, int index) {
         // 拗音は2文字必要
         if ((str.length() - index) < 2) {
@@ -206,6 +256,18 @@ public class KanaToRomaji {
         mChokuKunreiMap = new HashMap<>();
         for (int i = 0; i < chokuKana.length; i++) {
             mChokuKunreiMap.put(chokuKana[i], chokuRoma[i]);
+        }
+    }
+
+    /**
+     * 日本式直音マップローディング
+     */
+    private void loadChokuOnNihonTable() {
+        String[] chokuKana = {"し", "じ", "ち", "つ", "ぢ", "づ", "ふ", "ゐ", "ゑ", "を"};
+        String[] chokuRoma = {"si", "zi", "ti", "tu", "di", "du", "hu", "wi", "we", "wo"};
+        mChokuNihonMap = new HashMap<>();
+        for (int i = 0; i < chokuKana.length; i++) {
+            mChokuNihonMap.put(chokuKana[i], chokuRoma[i]);
         }
     }
 
