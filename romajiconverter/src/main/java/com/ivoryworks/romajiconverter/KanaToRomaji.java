@@ -14,12 +14,16 @@ public class KanaToRomaji {
     Map mChokuHepburnMap;
     Map mChokuKunreiMap;
     Map mYouBaseMap;
+    Map mYouHepburnMap;
+    Map mYouKunreiMap;
 
     public KanaToRomaji() {
         loadChokuOnBaseTable();
         loadChokuOnHepburnTable();
         loadChokuOnKunreiTable();
         loadYouOnBaseTable();
+        loadYouOnHepburnTable();
+        loadYouOnKunreiTable();
     }
 
     public List<String> convert(final String str) {
@@ -63,18 +67,28 @@ public class KanaToRomaji {
             // You-on
             String youOn = str.substring(index, index + 2);
             List<String> recRoma = convertHepburnRecursion(str, index + 2);
-            if (recRoma.size() == 0) {
-                romaList.add((String) mYouBaseMap.get(youOn));
-            } else {
-                for (String childStr : recRoma) {
-                    romaList.add(mYouBaseMap.get(youOn) + childStr);
+            if (mYouBaseMap.containsKey(youOn)) {
+                if (recRoma.size() == 0) {
+                    romaList.add((String) mYouBaseMap.get(youOn));
+                } else {
+                    for (String childStr : recRoma) {
+                        romaList.add(mYouBaseMap.get(youOn) + childStr);
+                    }
+                }
+            } else if (mYouHepburnMap.containsKey(youOn)) {
+                if (recRoma.size() == 0) {
+                    romaList.add((String) mYouHepburnMap.get(youOn));
+                } else {
+                    for (String childStr : recRoma) {
+                        romaList.add(mYouHepburnMap.get(youOn) + childStr);
+                    }
                 }
             }
         } else {
             // Choku-on
             String fig = String.valueOf(str.charAt(index));
+            List<String> recRoma = convertHepburnRecursion(str, index + 1);
             if (mChokuBaseMap.containsKey(fig)) {
-                List<String> recRoma = convertHepburnRecursion(str, index + 1);
                 if (recRoma.size() == 0) {
                     romaList.add((String) mChokuBaseMap.get(fig));
                 } else {
@@ -83,7 +97,6 @@ public class KanaToRomaji {
                     }
                 }
             } else if (mChokuHepburnMap.containsKey(fig)) {
-                List<String> recRoma = convertHepburnRecursion(str, index + 1);
                 if (recRoma.size() == 0) {
                     romaList.add((String) mChokuHepburnMap.get(fig));
                 } else {
@@ -112,24 +125,46 @@ public class KanaToRomaji {
             return romaList;    // Terminate
         }
 
-        // Choku-on
-        String fig = String.valueOf(str.charAt(index));
-        if (mChokuBaseMap.containsKey(fig)) {
-            List<String> recRoma = convertKunreiRecursion(str, index + 1);
-            if (recRoma.size() == 0) {
-                romaList.add((String) mChokuBaseMap.get(fig));
-            } else {
-                for (String childStr : recRoma) {
-                    romaList.add(mChokuBaseMap.get(fig) + childStr);
+        if (isYouOn(str, index)) {
+            // You-on
+            String youOn = str.substring(index, index + 2);
+            List<String> recRoma = convertKunreiRecursion(str, index + 2);
+            if (mYouBaseMap.containsKey(youOn)) {
+                if (recRoma.size() == 0) {
+                    romaList.add((String) mYouBaseMap.get(youOn));
+                } else {
+                    for (String childStr : recRoma) {
+                        romaList.add(mYouBaseMap.get(youOn) + childStr);
+                    }
+                }
+            } else if (mYouKunreiMap.containsKey(youOn)) {
+                if (recRoma.size() == 0) {
+                    romaList.add((String) mYouKunreiMap.get(youOn));
+                } else {
+                    for (String childStr : recRoma) {
+                        romaList.add(mYouKunreiMap.get(youOn) + childStr);
+                    }
                 }
             }
-        } else if (mChokuKunreiMap.containsKey(fig)) {
+        } else {
+            // Choku-on
+            String fig = String.valueOf(str.charAt(index));
             List<String> recRoma = convertKunreiRecursion(str, index + 1);
-            if (recRoma.size() == 0) {
-                romaList.add((String) mChokuKunreiMap.get(fig));
-            } else {
-                for (String childStr : recRoma) {
-                    romaList.add(mChokuKunreiMap.get(fig) + childStr);
+            if (mChokuBaseMap.containsKey(fig)) {
+                if (recRoma.size() == 0) {
+                    romaList.add((String) mChokuBaseMap.get(fig));
+                } else {
+                    for (String childStr : recRoma) {
+                        romaList.add(mChokuBaseMap.get(fig) + childStr);
+                    }
+                }
+            } else if (mChokuKunreiMap.containsKey(fig)) {
+                if (recRoma.size() == 0) {
+                    romaList.add((String) mChokuKunreiMap.get(fig));
+                } else {
+                    for (String childStr : recRoma) {
+                        romaList.add(mChokuKunreiMap.get(fig) + childStr);
+                    }
                 }
             }
         }
@@ -157,10 +192,9 @@ public class KanaToRomaji {
     }
 
     /**
-     * 共通変換マップローディング
+     * 共通直音マップローディング
      */
     private void loadChokuOnBaseTable() {
-        // Choku-on
         String[] chokuKana = {"あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
                 "さ", "す", "せ", "そ", "た", "て", "と",
                 "な", "に", "ぬ", "ね", "の", "は", "ひ", "へ", "ほ",
@@ -184,10 +218,9 @@ public class KanaToRomaji {
     }
 
     /**
-     * ヘボン式変換マップローディング
+     * ヘボン式直音マップローディング
      */
     private void loadChokuOnHepburnTable() {
-        // Choku-on
         String[] chokuKana = {"し", "じ", "ち", "つ", "ぢ", "づ", "ふ", "ゐ", "ゑ", "を"};
         String[] chokuRoma = {"shi", "ji", "chi", "tsu", "ji", "zu", "fu", "i", "e", "o"};
         mChokuHepburnMap = new HashMap<>();
@@ -197,10 +230,9 @@ public class KanaToRomaji {
     }
 
     /**
-     * 訓令式変換マップローディング
+     * 訓令式直音マップローディング
      */
     private void loadChokuOnKunreiTable() {
-        // Choku-on
         String[] chokuKana = {"し", "じ", "ち", "つ", "ぢ", "づ", "ふ", "ゐ", "ゑ", "を"};
         String[] chokuRoma = {"si", "zi", "ti", "tu", "zi", "zu", "hu", "i", "e", "o"};
         mChokuKunreiMap = new HashMap<>();
@@ -209,19 +241,47 @@ public class KanaToRomaji {
         }
     }
 
+    /**
+     * 共通拗音マップローディング
+     */
     private void loadYouOnBaseTable() {
-        // 拗音 
-        String[] youKana = {"きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ",
-                "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ",
-                "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ",
-                "ぢゃ", "ぢゅ", "ぢょ", "びゃ", "びゅ", "びょ", "ぴゃ", "ぴゅ", "ぴょ"};
-        String[] youRoma = {"kya", "kyu", "kyo", "sha", "shu", "sho", "cha", "chu", "cho",
-                "nya", "nyu", "nyo", "hya", "hyu", "hyo", "mya", "myu", "myo",
-                "rya", "ryu", "ryo", "gya", "gyu", "gyo", "ja", "ju", "jo",
-                "ja", "ju", "jo", "bya", "byu", "byo", "pya", "pyu", "pyo"};
+        String[] youKana = {"きゃ", "きゅ", "きょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ",
+                "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ",
+                "びゃ", "びゅ", "びょ", "ぴゃ", "ぴゅ", "ぴょ"};
+        String[] youRoma = {"kya", "kyu", "kyo", "nya", "nyu", "nyo", "hya", "hyu", "hyo",
+                "mya", "myu", "myo", "rya", "ryu", "ryo", "gya", "gyu", "gyo",
+                "bya", "byu", "byo", "pya", "pyu", "pyo"};
         mYouBaseMap = new HashMap<>();
         for (int i = 0; i < youKana.length; i++) {
             mYouBaseMap.put(youKana[i], youRoma[i]);
+        }
+    }
+
+    /**
+     * ヘボン式拗音マップローディング
+     */
+    private void loadYouOnHepburnTable() {
+        String[] youKana = {"しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "じゃ", "じゅ", "じょ",
+                "ぢゃ", "ぢゅ", "ぢょ"};
+        String[] youRoma = {"sha", "shu", "sho", "cha", "chu", "cho", "ja", "ju", "jo",
+                "ja", "ju", "jo"};
+        mYouHepburnMap = new HashMap<>();
+        for (int i = 0; i < youKana.length; i++) {
+            mYouHepburnMap.put(youKana[i], youRoma[i]);
+        }
+    }
+
+    /**
+     * 訓令式拗音マップローディング
+     */
+    private void loadYouOnKunreiTable() {
+        String[] youKana = {"しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "じゃ", "じゅ", "じょ",
+                "ぢゃ", "ぢゅ", "ぢょ"};
+        String[] youRoma = {"sya", "syu", "syo", "tya", "tyu", "tyo", "zya", "zyu", "zyo",
+                "zya", "zyu", "zyo"};
+        mYouKunreiMap = new HashMap<>();
+        for (int i = 0; i < youKana.length; i++) {
+            mYouKunreiMap.put(youKana[i], youRoma[i]);
         }
     }
 }
