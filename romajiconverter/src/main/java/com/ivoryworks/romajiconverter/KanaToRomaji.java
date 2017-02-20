@@ -208,6 +208,14 @@ public class KanaToRomaji {
                 return true;
             }
         }
+
+        String[] youEx = {"っ"};
+        for (String yx : youEx) {
+            if (yx.equals(c)) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -279,10 +287,26 @@ public class KanaToRomaji {
     private void loadYouOnBaseTable() {
         String[] youKana = {"きゃ", "きゅ", "きょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ",
                 "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ",
-                "びゃ", "びゅ", "びょ", "ぴゃ", "ぴゅ", "ぴょ"};
+                "びゃ", "びゅ", "びょ", "ぴゃ", "ぴゅ", "ぴょ",
+                "っか", "っき", "っく", "っけ", "っこ", "っさ", "っす", "っせ", "っそ",
+                "った", "って", "っと", "っな", "っに", "っぬ", "っね", "っの",
+                "っは", "っひ", "っへ", "っほ", "っま", "っみ", "っむ", "っめ", "っも",
+                "っや", "っゐ", "っう", "っゑ", "っよ", "っら", "っり", "っる", "っれ", "っろ",
+                "っわ", "っを", "っん",
+                "っが", "っぎ", "っぐ", "っげ", "っご", "っざ", "っず", "っぜ", "っぞ",
+                "っだ", "っで", "っど", "っば", "っび", "っぶ", "っべ", "っぼ",
+                "っぱ", "っぴ", "っぷ", "っぺ", "っぽ"};
         String[] youRoma = {"kya", "kyu", "kyo", "nya", "nyu", "nyo", "hya", "hyu", "hyo",
                 "mya", "myu", "myo", "rya", "ryu", "ryo", "gya", "gyu", "gyo",
-                "bya", "byu", "byo", "pya", "pyu", "pyo"};
+                "bya", "byu", "byo", "pya", "pyu", "pyo",
+                "kka", "kki", "kku", "kke", "kko", "ssa", "ssu", "sse", "sso",
+                "tta", "tte", "tto", "nna", "nni", "nnu", "nne", "nno",
+                "hha", "hhi", "hhe", "hho", "mma", "mmi", "mmu", "mme", "mmo",
+                "yya", "yyi", "yyu", "yye", "yyo", "rra", "rri", "rru", "rre", "rro",
+                "wwa", "oo", "nn",
+                "gga", "ggi", "ggu", "gge", "ggo", "zza", "zzu", "zze", "zzo",
+                "dda", "dde", "ddo", "bba", "bbi", "bbu", "bbe", "bbo",
+                "ppa", "ppi", "ppu", "ppe", "ppo"};
         mYouBaseMap = new HashMap<>();
         for (int i = 0; i < youKana.length; i++) {
             mYouBaseMap.put(youKana[i], youRoma[i]);
@@ -294,9 +318,11 @@ public class KanaToRomaji {
      */
     private void loadYouOnHepburnTable() {
         String[] youKana = {"しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "じゃ", "じゅ", "じょ",
-                "ぢゃ", "ぢゅ", "ぢょ"};
+                "ぢゃ", "ぢゅ", "ぢょ",
+                "っし", "っじ", "っち", "っつ", "っぢ", "っづ", "っふ"};
         String[] youRoma = {"sha", "shu", "sho", "cha", "chu", "cho", "ja", "ju", "jo",
-                "ja", "ju", "jo"};
+                "ja", "ju", "jo",
+                "sshi", "jji", "tchi", "ttsu", "jji", "zzu", "ffu"};
         mYouHepburnMap = new HashMap<>();
         for (int i = 0; i < youKana.length; i++) {
             mYouHepburnMap.put(youKana[i], youRoma[i]);
@@ -308,9 +334,11 @@ public class KanaToRomaji {
      */
     private void loadYouOnKunreiTable() {
         String[] youKana = {"しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "じゃ", "じゅ", "じょ",
-                "ぢゃ", "ぢゅ", "ぢょ"};
+                "ぢゃ", "ぢゅ", "ぢょ",
+                "っし", "っじ", "っち", "っつ", "っぢ", "っづ", "っふ"};
         String[] youRoma = {"sya", "syu", "syo", "tya", "tyu", "tyo", "zya", "zyu", "zyo",
-                "zya", "zyu", "zyo"};
+                "zya", "zyu", "zyo",
+                "ssi", "zzi", "tti", "ttu", "zzi", "zzu", "hhu"};
         mYouKunreiMap = new HashMap<>();
         for (int i = 0; i < youKana.length; i++) {
             mYouKunreiMap.put(youKana[i], youRoma[i]);
@@ -322,9 +350,11 @@ public class KanaToRomaji {
      */
     private void loadYouOnNihonTable() {
         String[] youKana = {"しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "じゃ", "じゅ", "じょ",
-                "ぢゃ", "ぢゅ", "ぢょ"};
+                "ぢゃ", "ぢゅ", "ぢょ",
+                "っし", "っじ", "っち", "っつ", "っぢ", "っづ", "っふ"};
         String[] youRoma = {"sya", "syu", "syo", "tya", "tyu", "tyo", "zya", "zyu", "zyo",
-                "dya", "dyu", "dyo"};
+                "dya", "dyu", "dyo",
+                "ssi", "zzi", "tti", "ttu", "ddi", "ddu", "hhu"};
         mYouNihonMap = new HashMap<>();
         for (int i = 0; i < youKana.length; i++) {
             mYouNihonMap.put(youKana[i], youRoma[i]);
