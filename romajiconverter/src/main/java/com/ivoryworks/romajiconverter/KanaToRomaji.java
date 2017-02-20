@@ -72,7 +72,7 @@ public class KanaToRomaji {
         String on;
         List<String> recRoma;
         Map[] mapSet;
-        if (isYouOn(str, index)) {
+        if (isYouOn(str, index) || isMM(str, index)) {
             // You-on
             on = str.substring(index, index + 2);
             recRoma = convertHepburnRecursion(str, index + 2);
@@ -219,6 +219,24 @@ public class KanaToRomaji {
         return false;
     }
 
+    private boolean isMM(final String str, int index) {
+        if ((str.length() - index) < 2) {
+            return false;
+        }
+        String c = String.valueOf(str.charAt(index));
+        if (!"ん".equals(c)) {
+            return false;
+        }
+        String c2 = String.valueOf(str.charAt(index + 1));
+        String[] mmLower = {"ま", "み", "む", "め", "も", "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ"};
+        for (String ml : mmLower) {
+            if (ml.equals(c2)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * 共通直音マップローディング
      */
@@ -319,10 +337,14 @@ public class KanaToRomaji {
     private void loadYouOnHepburnTable() {
         String[] youKana = {"しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "じゃ", "じゅ", "じょ",
                 "ぢゃ", "ぢゅ", "ぢょ",
-                "っし", "っじ", "っち", "っつ", "っぢ", "っづ", "っふ"};
+                "っし", "っじ", "っち", "っつ", "っぢ", "っづ", "っふ",
+                "んま", "んみ", "んむ", "んめ", "んも", "んば", "んび", "んぶ", "んべ", "んぼ",
+                "んぱ", "んぴ", "んぷ", "んぺ", "んぽ"};
         String[] youRoma = {"sha", "shu", "sho", "cha", "chu", "cho", "ja", "ju", "jo",
                 "ja", "ju", "jo",
-                "sshi", "jji", "tchi", "ttsu", "jji", "zzu", "ffu"};
+                "sshi", "jji", "tchi", "ttsu", "jji", "zzu", "ffu",
+                "mma", "mmi", "mmu", "mme", "mmo", "mba", "mbi", "mbu", "mbe", "mbo",
+                "mmpa", "mmpi", "mmpu", "mmpe", "mmpo"};
         mYouHepburnMap = new HashMap<>();
         for (int i = 0; i < youKana.length; i++) {
             mYouHepburnMap.put(youKana[i], youRoma[i]);
