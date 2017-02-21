@@ -46,6 +46,9 @@ public class KanaToRomajiHepburnTest {
         assertTrue(convertChecker("さっづ", new String[]{"saddu"}, KanaToRomaji.SYSTEM_NIHON));
         assertTrue(convertChecker("さっふ", new String[]{"sahhu"}, KanaToRomaji.SYSTEM_NIHON));
 
+        // kwa,gwa
+        assertTrue(convertChecker("くゎぐゎ", new String[]{"kwagwa"}, KanaToRomaji.SYSTEM_NIHON));
+
         // gunma, nanba
         assertTrue(convertChecker("ぐんま", new String[]{"gunma"}, KanaToRomaji.SYSTEM_NIHON));
         assertTrue(convertChecker("なんば", new String[]{"nanba"}, KanaToRomaji.SYSTEM_NIHON));
@@ -95,6 +98,9 @@ public class KanaToRomajiHepburnTest {
         assertTrue(convertChecker("さっぢ", new String[]{"sazzi"}, KanaToRomaji.SYSTEM_KUNREI));
         assertTrue(convertChecker("さっづ", new String[]{"sazzu"}, KanaToRomaji.SYSTEM_KUNREI));
         assertTrue(convertChecker("さっふ", new String[]{"sahhu"}, KanaToRomaji.SYSTEM_KUNREI));
+
+        // kwa,gwa
+        assertTrue(convertChecker("くゎぐゎ", new String[]{"kwagwa"}, KanaToRomaji.SYSTEM_KUNREI));
 
         // gunma, nanba
         assertTrue(convertChecker("ぐんま", new String[]{"gunma"}, KanaToRomaji.SYSTEM_KUNREI));
@@ -146,6 +152,9 @@ public class KanaToRomajiHepburnTest {
         assertTrue(convertChecker("さっぢ", new String[]{"sajji"}, KanaToRomaji.SYSTEM_HEPBURN));
         assertTrue(convertChecker("さっづ", new String[]{"sazzu"}, KanaToRomaji.SYSTEM_HEPBURN));
         assertTrue(convertChecker("さっふ", new String[]{"saffu"}, KanaToRomaji.SYSTEM_HEPBURN));
+
+        // kuwa,guwa
+        assertTrue(convertChecker("くゎぐゎ", new String[]{"kuwaguwa"}, KanaToRomaji.SYSTEM_HEPBURN));
 
         // gumma, namba
         assertTrue(convertChecker("ぐんま", new String[]{"gumma"}, KanaToRomaji.SYSTEM_HEPBURN));

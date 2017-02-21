@@ -197,18 +197,23 @@ public class KanaToRomaji {
             return false;
         }
         String c = String.valueOf(str.charAt(index));
+        String c2 = String.valueOf(str.charAt(index + 1));
         String[] youUpper = {"き", "し", "ち", "に", "ひ", "み", "り", "ぎ", "じ", "ぢ", "び", "ぴ"};
         for (String yu : youUpper) {
             if (!yu.equals(c)) {
                 continue;
             }
-            String c2 = String.valueOf(str.charAt(index + 1));
             // You-on lower
             if (c2.equals("ゃ") || c2.equals("ゅ") || c2.equals("ょ")) {
                 return true;
             }
         }
 
+        if ("くゎ".equals(c+c2) || "ぐゎ".equals(c+c2)) {
+            return true;
+        }
+
+        // 「(き)っぷ」ki-ppuなどの判定
         String[] youEx = {"っ"};
         for (String yx : youEx) {
             if (yx.equals(c)) {
@@ -336,12 +341,12 @@ public class KanaToRomaji {
      */
     private void loadYouOnHepburnTable() {
         String[] youKana = {"しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "じゃ", "じゅ", "じょ",
-                "ぢゃ", "ぢゅ", "ぢょ",
+                "ぢゃ", "ぢゅ", "ぢょ", "くゎ", "ぐゎ",
                 "っし", "っじ", "っち", "っつ", "っぢ", "っづ", "っふ",
                 "んま", "んみ", "んむ", "んめ", "んも", "んば", "んび", "んぶ", "んべ", "んぼ",
                 "んぱ", "んぴ", "んぷ", "んぺ", "んぽ"};
         String[] youRoma = {"sha", "shu", "sho", "cha", "chu", "cho", "ja", "ju", "jo",
-                "ja", "ju", "jo",
+                "ja", "ju", "jo", "kuwa", "guwa",
                 "sshi", "jji", "tchi", "ttsu", "jji", "zzu", "ffu",
                 "mma", "mmi", "mmu", "mme", "mmo", "mba", "mbi", "mbu", "mbe", "mbo",
                 "mmpa", "mmpi", "mmpu", "mmpe", "mmpo"};
@@ -356,10 +361,10 @@ public class KanaToRomaji {
      */
     private void loadYouOnKunreiTable() {
         String[] youKana = {"しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "じゃ", "じゅ", "じょ",
-                "ぢゃ", "ぢゅ", "ぢょ",
+                "ぢゃ", "ぢゅ", "ぢょ", "くゎ", "ぐゎ",
                 "っし", "っじ", "っち", "っつ", "っぢ", "っづ", "っふ"};
         String[] youRoma = {"sya", "syu", "syo", "tya", "tyu", "tyo", "zya", "zyu", "zyo",
-                "zya", "zyu", "zyo",
+                "zya", "zyu", "zyo", "kwa", "gwa",
                 "ssi", "zzi", "tti", "ttu", "zzi", "zzu", "hhu"};
         mYouKunreiMap = new HashMap<>();
         for (int i = 0; i < youKana.length; i++) {
@@ -372,10 +377,10 @@ public class KanaToRomaji {
      */
     private void loadYouOnNihonTable() {
         String[] youKana = {"しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "じゃ", "じゅ", "じょ",
-                "ぢゃ", "ぢゅ", "ぢょ",
+                "ぢゃ", "ぢゅ", "ぢょ", "くゎ", "ぐゎ",
                 "っし", "っじ", "っち", "っつ", "っぢ", "っづ", "っふ"};
         String[] youRoma = {"sya", "syu", "syo", "tya", "tyu", "tyo", "zya", "zyu", "zyo",
-                "dya", "dyu", "dyo",
+                "dya", "dyu", "dyo", "kwa", "gwa",
                 "ssi", "zzi", "tti", "ttu", "ddi", "ddu", "hhu"};
         mYouNihonMap = new HashMap<>();
         for (int i = 0; i < youKana.length; i++) {
