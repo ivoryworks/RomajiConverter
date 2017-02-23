@@ -66,13 +66,16 @@ public class KanaToRomajiHepburnTest {
         assertTrue(convertChecker("ちつ", new String[]{"titu"}, KanaToRomaji.SYSTEM_NIHON));
 
         // di, du
-        assertTrue(convertChecker("ぢづ", new String[]{"didu"}, KanaToRomaji.SYSTEM_NIHON));
+        assertTrue(convertChecker("ぢづ", new String[]{"didzu", "didu"}, KanaToRomaji.SYSTEM_NIHON));
 
         // hu
         assertTrue(convertChecker("ふ", new String[]{"hu"}, KanaToRomaji.SYSTEM_NIHON));
 
         // wi, we, wo
         assertTrue(convertChecker("ゐゑを", new String[]{"wiwewo"}, KanaToRomaji.SYSTEM_NIHON));
+
+        // e. ye
+//        assertTrue(convertChecker("え", new String[]{"e", "ye"}, KanaToRomaji.SYSTEM_NIHON));
     }
 
     /**
@@ -119,7 +122,7 @@ public class KanaToRomajiHepburnTest {
         assertTrue(convertChecker("ちつ", new String[]{"titu"}, KanaToRomaji.SYSTEM_KUNREI));
 
         // di, du
-        assertTrue(convertChecker("ぢづ", new String[]{"zizu"}, KanaToRomaji.SYSTEM_KUNREI));
+        assertTrue(convertChecker("ぢづ", new String[]{"zidzu", "zizu"}, KanaToRomaji.SYSTEM_KUNREI));
 
         // hu
         assertTrue(convertChecker("ふ", new String[]{"hu"}, KanaToRomaji.SYSTEM_KUNREI));
@@ -177,7 +180,7 @@ public class KanaToRomajiHepburnTest {
         assertTrue(convertChecker("じ", new String[]{"ji"}, KanaToRomaji.SYSTEM_HEPBURN));
 
         // ji,zu
-        assertTrue(convertChecker("ぢづ", new String[]{"jizu"}, KanaToRomaji.SYSTEM_HEPBURN));
+        assertTrue(convertChecker("ぢづ", new String[]{"jidzu", "jizu"}, KanaToRomaji.SYSTEM_HEPBURN));
     }
 
     private boolean convertChecker(String kana, String[] romajis) {
