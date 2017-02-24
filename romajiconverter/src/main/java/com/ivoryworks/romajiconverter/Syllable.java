@@ -69,11 +69,11 @@ public class Syllable {
     public static final String[] MM_ROMAJI_HEPBURN = {"mma", "mmi", "mmu", "mme", "mmo", "mba", "mbi", "mbu", "mbe",
             "mbo", "mpa", "mpi", "mpu", "mpe", "mpo"};
 
-    private static String[] getSyllable(String[] search, String[] pickup, String needle) {
+    private static String[] getSyllable(String[] keyArray, String[] valueArray, String needle) {
         String[] syllables = new String[0];
-        for (int i = 0; i < search.length; i++) {
-            if (search[i].equals(needle)) {
-                putString(syllables, pickup[i]);
+        for (int i = 0; i < keyArray.length; i++) {
+            if (keyArray[i].equals(needle)) {
+                syllables = putString(syllables, valueArray[i]);
             }
         }
         return syllables;

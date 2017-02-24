@@ -9,7 +9,17 @@ import static org.junit.Assert.*;
 public class SyllableTest {
     @Test
     public void getSyllable() throws Exception {
+        Method getSyllable = Syllable.class.getDeclaredMethod("getSyllable", String[].class, String[].class, String.class);
+        getSyllable.setAccessible(true);
 
+        String[] outputArray = (String[]) getSyllable.invoke(null, Syllable.CHOKU_KANA_BASE, Syllable.CHOKU_ROMAJI_BASE, "あ");
+        assertTrue(outputArray.length == 1);
+        assertEquals(outputArray[0], "a");
+
+        outputArray = (String[]) getSyllable.invoke(null, Syllable.CHOKU_KANA_BASE, Syllable.CHOKU_ROMAJI_BASE, "え");
+        assertTrue(outputArray.length == 2);
+        assertEquals(outputArray[0], "e");
+        assertEquals(outputArray[1], "ye");
     }
 
     @Test
