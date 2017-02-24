@@ -17,7 +17,7 @@ public class KanaToRomajiTest {
         assertTrue(convertChecker("きっぷ", new String[]{"kippu"}));
 
         // sammpo
-        assertTrue(convertChecker("さんぽ", new String[]{"sammpo"}));
+        assertTrue(convertChecker("さんぽ", new String[]{"sampo"}));
     }
 
     /**
@@ -185,9 +185,8 @@ public class KanaToRomajiTest {
 
     private boolean convertChecker(String kana, String[] romajis) {
         List<String> result;
-        KanaToRomaji k2r = new KanaToRomaji();
 
-        result = k2r.convert(kana);
+        result = KanaToRomaji.convert(kana);
         if (result.size() != romajis.length) {
             return false;
         }
