@@ -21,9 +21,9 @@ public class Syllable {
             "pa", "pi", "pu", "pe", "po", "ye", "dzu"};
     // 直音音節(差分)
     public static final String[] CHOKU_KANA_DIFF = {"し", "じ", "ち", "つ", "ぢ", "づ", "ふ", "ゐ", "ゑ", "を"};
-    public static final String[] CHOKU_ROMA_DIFF_HEPBURN = {"shi", "ji", "chi", "tsu", "ji", "zu", "fu", "i", "e", "o"};
-    public static final String[] CHOKU_ROMA_DIFF_KUNREI = {"si", "zi", "ti", "tu", "zi", "zu", "hu", "i", "e", "o"};
-    public static final String[] CHOKU_ROMA_DIFF_NIHON = {"si", "zi", "ti", "tu", "di", "du", "hu", "wi", "we", "wo"};
+    public static final String[] CHOKU_ROMAJI_DIFF_HEPBURN = {"shi", "ji", "chi", "tsu", "ji", "zu", "fu", "i", "e", "o"};
+    public static final String[] CHOKU_ROMAJI_DIFF_KUNREI = {"si", "zi", "ti", "tu", "zi", "zu", "hu", "i", "e", "o"};
+    public static final String[] CHOKU_ROMAJI_DIFF_NIHON = {"si", "zi", "ti", "tu", "di", "du", "hu", "wi", "we", "wo"};
 
     // 拗音音節(かな)
     public static final String[] YOU_KANA_BASE = {"きゃ", "きゅ", "きょ", "にゃ", "にゅ", "にょ",
@@ -53,13 +53,13 @@ public class Syllable {
     public static final String[] YOU_KANA_DIFF = {"しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "じゃ", "じゅ", "じょ",
             "ぢゃ", "ぢゅ", "ぢょ", "くゎ", "ぐゎ",
             "っし", "っじ", "っち", "っつ", "っぢ", "っづ", "っふ"};
-    public static final String[] YOU_ROMA_DIFF_HEPBURN = {"sha", "shu", "sho", "cha", "chu", "cho", "ja", "ju", "jo",
+    public static final String[] YOU_ROMAJI_DIFF_HEPBURN = {"sha", "shu", "sho", "cha", "chu", "cho", "ja", "ju", "jo",
             "ja", "ju", "jo", "kuwa", "guwa",
             "sshi", "jji", "tchi", "ttsu", "jji", "zzu", "ffu"};
-    public static final String[] YOU_ROMA_DIFF_KUNREI = {"sya", "syu", "syo", "tya", "tyu", "tyo", "zya", "zyu", "zyo",
+    public static final String[] YOU_ROMAJI_DIFF_KUNREI = {"sya", "syu", "syo", "tya", "tyu", "tyo", "zya", "zyu", "zyo",
             "zya", "zyu", "zyo", "kwa", "gwa",
             "ssi", "zzi", "tti", "ttu", "zzi", "zzu", "hhu"};
-    public static final String[] YOU_ROMA_DIFF_NIHON = {"sya", "syu", "syo", "tya", "tyu", "tyo", "zya", "zyu", "zyo",
+    public static final String[] YOU_ROMAJI_DIFF_NIHON = {"sya", "syu", "syo", "tya", "tyu", "tyo", "zya", "zyu", "zyo",
             "dya", "dyu", "dyo", "kwa", "gwa",
             "ssi", "zzi", "tti", "ttu", "ddi", "ddu", "hhu"};
 
@@ -69,10 +69,31 @@ public class Syllable {
     public static final String[] MM_ROMAJI_HEPBURN = {"mma", "mmi", "mmu", "mme", "mmo", "mba", "mbi", "mbu", "mbe",
             "mbo", "mpa", "mpi", "mpu", "mpe", "mpo"};
 
-    private static String[] getSyllable(String[] keyArray, String[] valueArray, String needle) {
+    public static String[] getSyllable(String key, int system) {
+        String[] syllables = getSyllable(CHOKU_KANA_BASE, CHOKU_ROMAJI_BASE, key);
+        syllables = joinArray(syllables, getSyllable(YOU_KANA_BASE, YOU_ROMAJI_BASE, key));
+        switch (system) {
+            case KanaToRomaji.SYSTEM_HEPBURN:
+                syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF, CHOKU_ROMAJI_DIFF_HEPBURN, key));
+                syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_HEPBURN, key));
+                syllables = joinArray(syllables, getSyllable(MM_KANA_HEPBURN, MM_ROMAJI_HEPBURN, key));
+                break;
+            case KanaToRomaji.SYSTEM_KUNREI:
+                syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF, CHOKU_ROMAJI_DIFF_KUNREI, key));
+                syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_KUNREI, key));
+                break;
+            case KanaToRomaji.SYSTEM_NIHON:
+                syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF, CHOKU_ROMAJI_DIFF_NIHON, key));
+                syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_NIHON, key));
+                break;
+        }
+        return syllables;
+    }
+
+    private static String[] getSyllable(String[] keyArray, String[] valueArray, String key) {
         String[] syllables = new String[0];
         for (int i = 0; i < keyArray.length; i++) {
-            if (keyArray[i].equals(needle)) {
+            if (keyArray[i].equals(key)) {
                 syllables = putString(syllables, valueArray[i]);
             }
         }
