@@ -2,6 +2,7 @@ package com.ivoryworks.romajiconverter;
 
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import static org.junit.Assert.*;
@@ -29,14 +30,19 @@ public class SyllableTest {
 
     @Test
     public void getSyllablePrivate() throws Exception {
+        Field chokuKanaBase = Syllable.class.getDeclaredField("CHOKU_KANA_BASE");
+        chokuKanaBase.setAccessible(true);
+        Field chokuRomajiBase = Syllable.class.getDeclaredField("CHOKU_ROMAJI_BASE");
+        chokuRomajiBase.setAccessible(true);
+
         Method getSyllable = Syllable.class.getDeclaredMethod("getSyllable", String[].class, String[].class, String.class);
         getSyllable.setAccessible(true);
 
-        String[] outputArray = (String[]) getSyllable.invoke(null, Syllable.CHOKU_KANA_BASE, Syllable.CHOKU_ROMAJI_BASE, "あ");
+        String[] outputArray = (String[]) getSyllable.invoke(null, chokuKanaBase.get(null), chokuRomajiBase.get(null), "あ");
         assertTrue(outputArray.length == 1);
         assertEquals(outputArray[0], "a");
 
-        outputArray = (String[]) getSyllable.invoke(null, Syllable.CHOKU_KANA_BASE, Syllable.CHOKU_ROMAJI_BASE, "え");
+        outputArray = (String[]) getSyllable.invoke(null, chokuKanaBase.get(null), chokuRomajiBase.get(null), "え");
         assertTrue(outputArray.length == 2);
         assertEquals(outputArray[0], "e");
         assertEquals(outputArray[1], "ye");
