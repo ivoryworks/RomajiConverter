@@ -75,7 +75,7 @@ public class KanaToRomajiTest {
         assertTrue(convertChecker("ゐゑを", new String[]{"wiwewo"}, KanaToRomaji.SYSTEM_NIHON));
 
         // e. ye
-//        assertTrue(convertChecker("え", new String[]{"e", "ye"}, KanaToRomaji.SYSTEM_NIHON));
+        assertTrue(convertChecker("え", new String[]{"e", "ye"}, KanaToRomaji.SYSTEM_NIHON));
     }
 
     /**
