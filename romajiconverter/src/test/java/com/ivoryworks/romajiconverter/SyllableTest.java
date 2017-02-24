@@ -18,9 +18,15 @@ public class SyllableTest {
         putString.setAccessible(true);
 
         String[] inputArray = new String[0];
-        putString.invoke(null, inputArray, "a");
-        assertTrue(inputArray.length == 1);
-        assertEquals(inputArray[0], "a");
+        String[] outputArray = (String[]) putString.invoke(null, inputArray, "a");
+        assertTrue(outputArray.length == 1);
+        assertEquals(outputArray[0], "a");
+
+        inputArray = new String[]{"a"};
+        outputArray = (String[]) putString.invoke(null, inputArray, "b");
+        assertTrue(outputArray.length == 2);
+        assertEquals(outputArray[0], "a");
+        assertEquals(outputArray[1], "b");
     }
 
     @Test

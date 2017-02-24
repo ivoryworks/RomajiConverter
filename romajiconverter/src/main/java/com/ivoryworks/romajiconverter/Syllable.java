@@ -79,12 +79,8 @@ public class Syllable {
         return syllables;
     }
 
-    private static void putString(String[] array, String syllable) {
-        array = (array == null) ? new String[0] : array;
-        String[] buf = new String[array.length + 1];
-        buf[buf.length - 1] = syllable;
-        System.arraycopy(array, 0, buf, 0, array.length);
-        array = buf;
+    private static String[] putString(String[] array, String syllable) {
+        return joinArray(array, new String[]{syllable});
     }
 
     private static String[] joinArray(String[] array1, String[] array2) {
