@@ -6,7 +6,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertTrue;
 
-public class KanaToRomajiHepburnTest {
+public class KanaToRomajiTest {
 
     @Test
     public void convertKana2Romaji() {
