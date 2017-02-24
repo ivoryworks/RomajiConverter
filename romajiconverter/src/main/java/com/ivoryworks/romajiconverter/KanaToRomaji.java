@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KanaToRomaji {
-    public static final int SYSTEM_HEPBURN = 0;
-    public static final int SYSTEM_KUNREI = 1;
-    public static final int SYSTEM_NIHON = 2;
+    static final int SYSTEM_HEPBURN = 0;
+    static final int SYSTEM_KUNREI = 1;
+    static final int SYSTEM_NIHON = 2;
 
     public static List<String> convert(final String str) {
         return convert(str, KanaToRomaji.SYSTEM_HEPBURN);
     }
 
-    public static List<String> convert(final String str, final int system) {
+    static List<String> convert(final String str, final int system) {
         List<String> strArray = new ArrayList<>();
         switch (system) {
             case SYSTEM_HEPBURN:

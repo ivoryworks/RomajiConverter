@@ -1,6 +1,6 @@
 package com.ivoryworks.romajiconverter;
 
-public class Syllable {
+class Syllable {
     // 直音音節(かな)
     private static final String[] CHOKU_KANA_BASE = {"あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
             "さ", "す", "せ", "そ", "た", "て", "と",
@@ -69,7 +69,7 @@ public class Syllable {
     private static final String[] MM_ROMAJI_HEPBURN = {"mma", "mmi", "mmu", "mme", "mmo", "mba", "mbi", "mbu", "mbe",
             "mbo", "mpa", "mpi", "mpu", "mpe", "mpo"};
 
-    public static String[] getSyllable(String key, int system) {
+    static String[] getSyllable(String key, int system) {
         String[] syllables = getSyllable(CHOKU_KANA_BASE, CHOKU_ROMAJI_BASE, key);
         syllables = joinArray(syllables, getSyllable(YOU_KANA_BASE, YOU_ROMAJI_BASE, key));
         switch (system) {
