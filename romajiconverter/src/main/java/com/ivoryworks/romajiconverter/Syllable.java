@@ -69,7 +69,7 @@ class Syllable {
     private static final String[] MM_ROMAJI_HEPBURN = {"mma", "mmi", "mmu", "mme", "mmo", "mba", "mbi", "mbu", "mbe",
             "mbo", "mpa", "mpi", "mpu", "mpe", "mpo"};
 
-    static String[] getSyllable(String key, int system) {
+    static String[] getRomajiSyllable(String key, int system) {
         String[] syllables = getSyllable(CHOKU_KANA_BASE, CHOKU_ROMAJI_BASE, key);
         syllables = joinArray(syllables, getSyllable(YOU_KANA_BASE, YOU_ROMAJI_BASE, key));
         switch (system) {
@@ -85,6 +85,27 @@ class Syllable {
             case KanaToRomaji.SYSTEM_NIHON:
                 syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF, CHOKU_ROMAJI_DIFF_NIHON, key));
                 syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_NIHON, key));
+                break;
+        }
+        return syllables;
+    }
+
+    static String[] getKanaSyllable(String key, int system) {
+        String[] syllables = getSyllable(CHOKU_ROMAJI_BASE, CHOKU_KANA_BASE, key);
+        syllables = joinArray(syllables, getSyllable(YOU_ROMAJI_BASE, YOU_KANA_BASE, key));
+        switch (system) {
+            case KanaToRomaji.SYSTEM_HEPBURN:
+                syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_HEPBURN, CHOKU_KANA_DIFF, key));
+                syllables = joinArray(syllables, getSyllable(YOU_ROMAJI_DIFF_HEPBURN, YOU_KANA_DIFF, key));
+                syllables = joinArray(syllables, getSyllable(MM_ROMAJI_HEPBURN, MM_KANA_HEPBURN, key));
+                break;
+            case KanaToRomaji.SYSTEM_KUNREI:
+                syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_KUNREI, CHOKU_KANA_DIFF, key));
+                syllables = joinArray(syllables, getSyllable(YOU_ROMAJI_DIFF_KUNREI, YOU_KANA_DIFF, key));
+                break;
+            case KanaToRomaji.SYSTEM_NIHON:
+                syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_NIHON, CHOKU_KANA_DIFF, key));
+                syllables = joinArray(syllables, getSyllable(YOU_ROMAJI_DIFF_NIHON, YOU_KANA_DIFF, key));
                 break;
         }
         return syllables;

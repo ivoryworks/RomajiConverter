@@ -9,20 +9,28 @@ import static org.junit.Assert.*;
 
 public class SyllableTest {
     @Test
-    public void getSyllable() throws Exception {
+    public void getKanaSyllable() throws Exception {
+        String[] outputArray = Syllable.getKanaSyllable("i", KanaToRomaji.SYSTEM_HEPBURN);
+        assertTrue(outputArray.length == 2);
+        assertEquals(outputArray[0], "い");
+        assertEquals(outputArray[1], "ゐ");
+    }
+
+    @Test
+    public void getRomajiSyllable() throws Exception {
         // BASEで1つ検出されるケース
-        String[] outputArray = Syllable.getSyllable("あ", KanaToRomaji.SYSTEM_HEPBURN);
+        String[] outputArray = Syllable.getRomajiSyllable("あ", KanaToRomaji.SYSTEM_HEPBURN);
         assertTrue(outputArray.length == 1);
         assertEquals(outputArray[0], "a");
 
         // BASEで2つ検出されるケース
-        outputArray = Syllable.getSyllable("え", KanaToRomaji.SYSTEM_HEPBURN);
+        outputArray = Syllable.getRomajiSyllable("え", KanaToRomaji.SYSTEM_HEPBURN);
         assertTrue(outputArray.length == 2);
         assertEquals(outputArray[0], "e");
         assertEquals(outputArray[1], "ye");
 
         // BASEとDIFFで1つずつ検出されるケース
-        outputArray = Syllable.getSyllable("づ", KanaToRomaji.SYSTEM_HEPBURN);
+        outputArray = Syllable.getRomajiSyllable("づ", KanaToRomaji.SYSTEM_HEPBURN);
         assertTrue(outputArray.length == 2);
         assertEquals(outputArray[0], "dzu");
         assertEquals(outputArray[1], "zu");
@@ -46,6 +54,14 @@ public class SyllableTest {
         assertTrue(outputArray.length == 2);
         assertEquals(outputArray[0], "e");
         assertEquals(outputArray[1], "ye");
+
+        outputArray = (String[]) getSyllable.invoke(null, chokuRomajiBase.get(null), chokuKanaBase.get(null), "ka");
+        assertTrue(outputArray.length == 1);
+        assertEquals(outputArray[0], "か");
+
+        outputArray = (String[]) getSyllable.invoke(null, chokuRomajiBase.get(null), chokuKanaBase.get(null), "dzu");
+        assertTrue(outputArray.length == 1);
+        assertEquals(outputArray[0], "づ");
     }
 
     @Test
