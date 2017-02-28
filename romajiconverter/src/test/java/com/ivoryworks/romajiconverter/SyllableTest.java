@@ -65,6 +65,30 @@ public class SyllableTest {
     }
 
     @Test
+    public void isRomajiChokuSyllable() {
+        assertTrue(Syllable.isRomajiChokuSyllable("shi", RomajiToKana.SYSTEM_HEPBURN));
+        assertTrue(Syllable.isRomajiChokuSyllable("ji", RomajiToKana.SYSTEM_HEPBURN));
+
+        assertTrue(Syllable.isRomajiChokuSyllable("zi", RomajiToKana.SYSTEM_KUNREI));
+        assertTrue(Syllable.isRomajiChokuSyllable("hu", RomajiToKana.SYSTEM_KUNREI));
+
+        assertTrue(Syllable.isRomajiChokuSyllable("di", RomajiToKana.SYSTEM_NIHON));
+        assertTrue(Syllable.isRomajiChokuSyllable("wo", RomajiToKana.SYSTEM_NIHON));
+    }
+
+    @Test
+    public void isRomajiYouSyllable() {
+        assertTrue(Syllable.isRomajiYouSyllable("cha", RomajiToKana.SYSTEM_HEPBURN));
+        assertTrue(Syllable.isRomajiYouSyllable("jo", RomajiToKana.SYSTEM_HEPBURN));
+
+        assertTrue(Syllable.isRomajiYouSyllable("zyo", RomajiToKana.SYSTEM_KUNREI));
+        assertTrue(Syllable.isRomajiYouSyllable("zzi", RomajiToKana.SYSTEM_KUNREI));
+
+        assertTrue(Syllable.isRomajiYouSyllable("dya", RomajiToKana.SYSTEM_NIHON));
+        assertTrue(Syllable.isRomajiYouSyllable("ddi", RomajiToKana.SYSTEM_NIHON));
+    }
+
+    @Test
     public void putString() throws Exception {
         Method putString = Syllable.class.getDeclaredMethod("putString", String[].class, String.class);
         putString.setAccessible(true);
