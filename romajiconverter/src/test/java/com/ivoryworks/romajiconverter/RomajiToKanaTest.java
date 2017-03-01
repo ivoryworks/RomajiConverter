@@ -71,6 +71,34 @@ public class RomajiToKanaTest {
         assertTrue(convertChecker("hu", new String[]{"ふ"}, RomajiToKana.SYSTEM_KUNREI));
     }
 
+    @Test
+    public void converterRomaji2KanaKunreiYouOn() throws Exception {
+        // sya,syu,syo
+        assertTrue(convertChecker("syasyusyo", new String[]{"しゃしゅしょ"}, RomajiToKana.SYSTEM_KUNREI));
+
+        // tya,tyu,tyo
+        assertTrue(convertChecker("tyatyutyo", new String[]{"ちゃちゅちょ"}, RomajiToKana.SYSTEM_KUNREI));
+
+        // zya,zyu,zyo
+        assertTrue(convertChecker("zyazyuzyo", new String[]{"じゃじゅじょ", "じゃじゅぢょ", "じゃぢゅじょ", "じゃぢゅぢょ",
+                "ぢゃじゅじょ", "ぢゃじゅぢょ", "ぢゃぢゅじょ", "ぢゃぢゅぢょ"}, RomajiToKana.SYSTEM_KUNREI));
+
+        // ssi,zzi,tti,ttu,zzi,zzu,hhu
+        assertTrue(convertChecker("sassi", new String[]{"さっし"}, RomajiToKana.SYSTEM_KUNREI));
+        assertTrue(convertChecker("sazzi", new String[]{"さっじ", "さっぢ"}, RomajiToKana.SYSTEM_KUNREI));
+        assertTrue(convertChecker("satti", new String[]{"さっち"}, RomajiToKana.SYSTEM_KUNREI));
+        assertTrue(convertChecker("sattu", new String[]{"さっつ"}, RomajiToKana.SYSTEM_KUNREI));
+        assertTrue(convertChecker("sazzu", new String[]{"さっず", "さっづ"}, RomajiToKana.SYSTEM_KUNREI));
+        assertTrue(convertChecker("sahhu", new String[]{"さっふ"}, RomajiToKana.SYSTEM_KUNREI));
+
+        // kwa,gwa
+        assertTrue(convertChecker("kwagwa", new String[]{"くゎぐゎ"}, RomajiToKana.SYSTEM_KUNREI));
+
+        // gunma, nanba
+        assertTrue(convertChecker("gunma", new String[]{"ぐんま"}, RomajiToKana.SYSTEM_KUNREI));
+        assertTrue(convertChecker("nanba", new String[]{"んあんば", "なんば"}, RomajiToKana.SYSTEM_KUNREI));
+    }
+
     private boolean convertChecker(String romaji, String[] kanas) {
         List<String> result;
 
