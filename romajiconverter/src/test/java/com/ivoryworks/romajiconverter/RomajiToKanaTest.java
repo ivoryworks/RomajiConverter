@@ -102,24 +102,55 @@ public class RomajiToKanaTest {
     @Test
     public void converterRomaji2KanaNihonChokuOn() throws Exception {
         // si, zi
-        assertTrue(convertChecker("sizi", new String[]{"しじ"}, KanaToRomaji.SYSTEM_NIHON));
+        assertTrue(convertChecker("sizi", new String[]{"しじ"}, RomajiToKana.SYSTEM_NIHON));
 
         // ti, tu
-        assertTrue(convertChecker("titu", new String[]{"ちつ"}, KanaToRomaji.SYSTEM_NIHON));
+        assertTrue(convertChecker("titu", new String[]{"ちつ"}, RomajiToKana.SYSTEM_NIHON));
 
         // di, du
-        assertTrue(convertChecker("didzu", new String[]{"ぢづ"}, KanaToRomaji.SYSTEM_NIHON));
-        assertTrue(convertChecker("didu", new String[]{"ぢづ"}, KanaToRomaji.SYSTEM_NIHON));
+        assertTrue(convertChecker("didzu", new String[]{"ぢづ"}, RomajiToKana.SYSTEM_NIHON));
+        assertTrue(convertChecker("didu", new String[]{"ぢづ"}, RomajiToKana.SYSTEM_NIHON));
 
         // hu
-        assertTrue(convertChecker("hu", new String[]{"ふ"}, KanaToRomaji.SYSTEM_NIHON));
+        assertTrue(convertChecker("hu", new String[]{"ふ"}, RomajiToKana.SYSTEM_NIHON));
 
         // wi, we, wo
-        assertTrue(convertChecker("wiwewo", new String[]{"ゐゑを"}, KanaToRomaji.SYSTEM_NIHON));
+        assertTrue(convertChecker("wiwewo", new String[]{"ゐゑを"}, RomajiToKana.SYSTEM_NIHON));
 
         // e. ye
-        assertTrue(convertChecker("e", new String[]{"え"}, KanaToRomaji.SYSTEM_NIHON));
-        assertTrue(convertChecker("ye", new String[]{"え"}, KanaToRomaji.SYSTEM_NIHON));
+        assertTrue(convertChecker("e", new String[]{"え"}, RomajiToKana.SYSTEM_NIHON));
+        assertTrue(convertChecker("ye", new String[]{"え"}, RomajiToKana.SYSTEM_NIHON));
+    }
+
+    @Test
+    public void converterRomaji2KanaNihonYouOn() throws Exception {
+        // sya,syu,syo
+        assertTrue(convertChecker("syasyusyo", new String[]{"しゃしゅしょ"}, RomajiToKana.SYSTEM_NIHON));
+
+        // tya,tyu,tyo
+        assertTrue(convertChecker("tyatyutyo", new String[]{"ちゃちゅちょ"}, RomajiToKana.SYSTEM_NIHON));
+
+        // zya,zyu,zyo
+        assertTrue(convertChecker("zyazyuzyo", new String[]{"じゃじゅじょ"}, RomajiToKana.SYSTEM_NIHON));
+
+        // dya,dyu,dyo
+        assertTrue(convertChecker("dyadyudyo", new String[]{"ぢゃぢゅぢょ"}, RomajiToKana.SYSTEM_NIHON));
+
+        // ssi,zzi.tti.ttu.ddi.ddu,hhu
+        assertTrue(convertChecker("sassi", new String[]{"さっし"}, RomajiToKana.SYSTEM_NIHON));
+        assertTrue(convertChecker("sazzi", new String[]{"さっじ"}, RomajiToKana.SYSTEM_NIHON));
+        assertTrue(convertChecker("satti", new String[]{"さっち"}, RomajiToKana.SYSTEM_NIHON));
+        assertTrue(convertChecker("sattu", new String[]{"さっつ"}, RomajiToKana.SYSTEM_NIHON));
+        assertTrue(convertChecker("saddi", new String[]{"さっぢ"}, RomajiToKana.SYSTEM_NIHON));
+        assertTrue(convertChecker("saddu", new String[]{"さっづ"}, RomajiToKana.SYSTEM_NIHON));
+        assertTrue(convertChecker("sahhu", new String[]{"さっふ"}, RomajiToKana.SYSTEM_NIHON));
+
+        // kwa,gwa
+        assertTrue(convertChecker("kwagwa", new String[]{"くゎぐゎ"}, KanaToRomaji.SYSTEM_NIHON));
+
+        // gunma, nanba
+        assertTrue(convertChecker("gunma", new String[]{"ぐんま"}, KanaToRomaji.SYSTEM_NIHON));
+        assertTrue(convertChecker("nanba", new String[]{"んあんば", "なんば"}, KanaToRomaji.SYSTEM_NIHON));
     }
 
     private boolean convertChecker(String romaji, String[] kanas) {
