@@ -99,6 +99,29 @@ public class RomajiToKanaTest {
         assertTrue(convertChecker("nanba", new String[]{"んあんば", "なんば"}, RomajiToKana.SYSTEM_KUNREI));
     }
 
+    @Test
+    public void converterRomaji2KanaNihonChokuOn() throws Exception {
+        // si, zi
+        assertTrue(convertChecker("sizi", new String[]{"しじ"}, KanaToRomaji.SYSTEM_NIHON));
+
+        // ti, tu
+        assertTrue(convertChecker("titu", new String[]{"ちつ"}, KanaToRomaji.SYSTEM_NIHON));
+
+        // di, du
+        assertTrue(convertChecker("didzu", new String[]{"ぢづ"}, KanaToRomaji.SYSTEM_NIHON));
+        assertTrue(convertChecker("didu", new String[]{"ぢづ"}, KanaToRomaji.SYSTEM_NIHON));
+
+        // hu
+        assertTrue(convertChecker("hu", new String[]{"ふ"}, KanaToRomaji.SYSTEM_NIHON));
+
+        // wi, we, wo
+        assertTrue(convertChecker("wiwewo", new String[]{"ゐゑを"}, KanaToRomaji.SYSTEM_NIHON));
+
+        // e. ye
+        assertTrue(convertChecker("e", new String[]{"え"}, KanaToRomaji.SYSTEM_NIHON));
+        assertTrue(convertChecker("ye", new String[]{"え"}, KanaToRomaji.SYSTEM_NIHON));
+    }
+
     private boolean convertChecker(String romaji, String[] kanas) {
         List<String> result;
 
