@@ -13,32 +13,16 @@ public class RomajiToKana {
     }
 
     static List<String> convert(final String romajiStr, final int system) {
-        List<String> strArray = new ArrayList<>();
-        switch (system) {
-            case SYSTEM_HEPBURN:
-                strArray = converterHepburn(romajiStr);
-                break;
-            case SYSTEM_KUNREI:
-                break;
-            case SYSTEM_NIHON:
-                break;
-            default:
-                break;
-        }
-        return strArray;
-    }
-
-    private static List<String> converterHepburn(final String romajiStr) {
         List<String> kanaStrList = new ArrayList<>();
         if (romajiStr == null || romajiStr.length() == 0) {
             return kanaStrList;
         }
-        kanaStrList = convertHepburnRecursion(romajiStr, 0);
+        kanaStrList = converterRecursion(romajiStr, 0, system);
 
         return kanaStrList;
     }
 
-    private static List<String> convertHepburnRecursion(final String romajiStr, int index) {
+    private static List<String> converterRecursion(final String romajiStr, int index, int system) {
         List<String> kanaStrList = new ArrayList<>();
         if (romajiStr.length() == index) {
             return kanaStrList;    // Terminate
@@ -51,14 +35,14 @@ public class RomajiToKana {
                 break;
             }
             String romajiSyllable = romajiStr.substring(index, index + SyllableLength);
-            if (Syllable.isRomajiChokuSyllable(romajiSyllable, SYSTEM_HEPBURN)) {
-                recKana.addAll(convertHepburnRecursion(romajiStr, index + SyllableLength));
+            if (Syllable.isRomajiChokuSyllable(romajiSyllable, system)) {
+                recKana.addAll(converterRecursion(romajiStr, index + SyllableLength, system));
             }
-            if (Syllable.isRomajiYouSyllable(romajiSyllable, SYSTEM_HEPBURN)) {
-                recKana.addAll(convertHepburnRecursion(romajiStr, index + SyllableLength));
+            if (Syllable.isRomajiYouSyllable(romajiSyllable, system)) {
+                recKana.addAll(converterRecursion(romajiStr, index + SyllableLength, system));
             }
 
-            String[] kanaSyllables = Syllable.getKanaSyllable(romajiSyllable, SYSTEM_HEPBURN);
+            String[] kanaSyllables = Syllable.getKanaSyllable(romajiSyllable, system);
             for (String kanaSyllable : kanaSyllables) {
                 if (recKana.size() == 0) {
                     kanaStrList.add(kanaSyllable);

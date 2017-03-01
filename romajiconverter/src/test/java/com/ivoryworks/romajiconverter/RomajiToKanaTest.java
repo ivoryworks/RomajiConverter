@@ -56,6 +56,21 @@ public class RomajiToKanaTest {
         assertTrue(convertChecker("namba", new String[]{"んあんば", "なんば"}, KanaToRomaji.SYSTEM_HEPBURN));  // ToDO
     }
 
+    @Test
+    public void converterRomaji2KanaKunreiChokuOn() throws Exception {
+        // si, zi
+        assertTrue(convertChecker("sizi", new String[]{"しじ", "しぢ"}, RomajiToKana.SYSTEM_KUNREI));
+
+        // ti, tu
+        assertTrue(convertChecker("titu", new String[]{"ちつ"}, RomajiToKana.SYSTEM_KUNREI));
+
+        // di, du
+        assertTrue(convertChecker("zidzu", new String[]{"じづ", "ぢづ"}, RomajiToKana.SYSTEM_KUNREI));
+
+        // hu
+        assertTrue(convertChecker("hu", new String[]{"ふ"}, RomajiToKana.SYSTEM_KUNREI));
+    }
+
     private boolean convertChecker(String romaji, String[] kanas) {
         List<String> result;
 
