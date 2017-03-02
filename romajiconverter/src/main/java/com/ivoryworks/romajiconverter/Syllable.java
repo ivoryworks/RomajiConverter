@@ -33,7 +33,7 @@ class Syllable {
             "った", "って", "っと", "っな", "っに", "っぬ", "っね", "っの",
             "っは", "っひ", "っへ", "っほ", "っま", "っみ", "っむ", "っめ", "っも",
             "っや", "っゐ", "っう", "っゑ", "っよ", "っら", "っり", "っる", "っれ", "っろ",
-            "っわ", "っを", "っん",
+            "っわ",
             "っが", "っぎ", "っぐ", "っげ", "っご", "っざ", "っず", "っぜ", "っぞ",
             "っだ", "っで", "っど", "っば", "っび", "っぶ", "っべ", "っぼ",
             "っぱ", "っぴ", "っぷ", "っぺ", "っぽ"};
@@ -45,7 +45,7 @@ class Syllable {
             "tta", "tte", "tto", "nna", "nni", "nnu", "nne", "nno",
             "hha", "hhi", "hhe", "hho", "mma", "mmi", "mmu", "mme", "mmo",
             "yya", "yyi", "yyu", "yye", "yyo", "rra", "rri", "rru", "rre", "rro",
-            "wwa", "oo", "nn",
+            "wwa",
             "gga", "ggi", "ggu", "gge", "ggo", "zza", "zzu", "zze", "zzo",
             "dda", "dde", "ddo", "bba", "bbi", "bbu", "bbe", "bbo",
             "ppa", "ppi", "ppu", "ppe", "ppo"};
@@ -69,25 +69,140 @@ class Syllable {
     private static final String[] MM_ROMAJI_HEPBURN = {"mma", "mmi", "mmu", "mme", "mmo", "mba", "mbi", "mbu", "mbe",
             "mbo", "mpa", "mpi", "mpu", "mpe", "mpo"};
 
-    static String[] getSyllable(String key, int system) {
+    /**
+     * 与えた仮名文字に対するローマ字(直音+拗音)を取得する
+     * @param key Romaji syllable
+     * @param system Modern system
+     * @return
+     */
+    static String[] getRomajiSyllable(String key, int system) {
+        String[] syllables = getRomajiChokuSyllable(key, system);
+        syllables = joinArray(syllables, getRomajiYouSyllable(key, system));
+        return syllables;
+    }
+
+    /**
+     * 与えた仮名文字に対するローマ字(直音)を取得する
+     * @param key Romaji syllable
+     * @param system Modern system
+     * @return
+     */
+    static String[] getRomajiChokuSyllable(String key, int system) {
         String[] syllables = getSyllable(CHOKU_KANA_BASE, CHOKU_ROMAJI_BASE, key);
-        syllables = joinArray(syllables, getSyllable(YOU_KANA_BASE, YOU_ROMAJI_BASE, key));
         switch (system) {
             case KanaToRomaji.SYSTEM_HEPBURN:
                 syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF, CHOKU_ROMAJI_DIFF_HEPBURN, key));
-                syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_HEPBURN, key));
                 syllables = joinArray(syllables, getSyllable(MM_KANA_HEPBURN, MM_ROMAJI_HEPBURN, key));
                 break;
             case KanaToRomaji.SYSTEM_KUNREI:
                 syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF, CHOKU_ROMAJI_DIFF_KUNREI, key));
-                syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_KUNREI, key));
                 break;
             case KanaToRomaji.SYSTEM_NIHON:
                 syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF, CHOKU_ROMAJI_DIFF_NIHON, key));
+                break;
+        }
+        return syllables;
+    }
+
+    /**
+     * 与えた仮名文字に対するローマ字(拗音)を取得する
+     * @param key Romaji syllable
+     * @param system Modern system
+     * @return
+     */
+    static String[] getRomajiYouSyllable(String key, int system) {
+        String[] syllables = getSyllable(YOU_KANA_BASE, YOU_ROMAJI_BASE, key);
+        switch (system) {
+            case KanaToRomaji.SYSTEM_HEPBURN:
+                syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_HEPBURN, key));
+                break;
+            case KanaToRomaji.SYSTEM_KUNREI:
+                syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_KUNREI, key));
+                break;
+            case KanaToRomaji.SYSTEM_NIHON:
                 syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_NIHON, key));
                 break;
         }
         return syllables;
+    }
+
+    /**
+     * 与えたローマ字に対する仮名文字(直音+拗音)を取得する
+     * @param key Romaji syllable
+     * @param system Modern system
+     * @return
+     */
+    static String[] getKanaSyllable(String key, int system) {
+        String[] syllables = getKanaChokuSyllable(key, system);
+        syllables = joinArray(syllables, getKanaYouSyllable(key, system));
+        return syllables;
+    }
+
+    /**
+     * 与えたローマ字に対する仮名文字(直音)を取得する
+     * @param key Romaji syllable
+     * @param system Modern system
+     * @return
+     */
+    static String[] getKanaChokuSyllable(String key, int system) {
+        String[] syllables = getSyllable(CHOKU_ROMAJI_BASE, CHOKU_KANA_BASE, key);
+        switch (system) {
+            case RomajiToKana.SYSTEM_HEPBURN:
+                syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_HEPBURN, CHOKU_KANA_DIFF, key));
+                syllables = joinArray(syllables, getSyllable(MM_ROMAJI_HEPBURN, MM_KANA_HEPBURN, key));
+                break;
+            case RomajiToKana.SYSTEM_KUNREI:
+                syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_KUNREI, CHOKU_KANA_DIFF, key));
+                break;
+            case RomajiToKana.SYSTEM_NIHON:
+                syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_NIHON, CHOKU_KANA_DIFF, key));
+                break;
+        }
+        return syllables;
+    }
+
+    /**
+     * 与えたローマ字に対する仮名文字(拗音)を取得する
+     * @param key Romaji syllable
+     * @param system Modern system
+     * @return
+     */
+    static String[] getKanaYouSyllable(String key, int system) {
+        String[] syllables = getSyllable(YOU_ROMAJI_BASE, YOU_KANA_BASE, key);
+        switch (system) {
+            case RomajiToKana.SYSTEM_HEPBURN:
+                syllables = joinArray(syllables, getSyllable(YOU_ROMAJI_DIFF_HEPBURN, YOU_KANA_DIFF, key));
+                break;
+            case RomajiToKana.SYSTEM_KUNREI:
+                syllables = joinArray(syllables, getSyllable(YOU_ROMAJI_DIFF_KUNREI, YOU_KANA_DIFF, key));
+                break;
+            case RomajiToKana.SYSTEM_NIHON:
+                syllables = joinArray(syllables, getSyllable(YOU_ROMAJI_DIFF_NIHON, YOU_KANA_DIFF, key));
+                break;
+        }
+        return syllables;
+    }
+
+    /**
+     * 与えた文字列がローマ字の直音であるか
+     * @param key Romaji syllable
+     * @param system Modern system
+     * @return
+     */
+    static boolean isRomajiChokuSyllable(String key, int system) {
+        String[] out = getKanaChokuSyllable(key, system);
+        return (out.length > 0);
+    }
+
+    /**
+     * 与えた文字列がローマ字の拗音であるか
+     * @param key Romaji syllable
+     * @param system Modern system
+     * @return
+     */
+    static boolean isRomajiYouSyllable(String key, int system) {
+        String[] out = getKanaYouSyllable(key, system);
+        return (out.length > 0);
     }
 
     private static String[] getSyllable(String[] keyArray, String[] valueArray, String key) {

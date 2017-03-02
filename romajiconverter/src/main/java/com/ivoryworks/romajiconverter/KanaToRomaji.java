@@ -58,7 +58,7 @@ public class KanaToRomaji {
             recRoma = convertHepburnRecursion(str, index + 1);
         }
 
-        String[] syllables = Syllable.getSyllable(on, SYSTEM_HEPBURN);
+        String[] syllables = Syllable.getRomajiSyllable(on, SYSTEM_HEPBURN);
         for (String syllable : syllables) {
             if (recRoma.size() == 0) {
                 romaList.add(syllable);
@@ -100,7 +100,7 @@ public class KanaToRomaji {
             recRoma = convertKunreiRecursion(str, index + 1);
         }
 
-        String[] syllables = Syllable.getSyllable(on, SYSTEM_KUNREI);
+        String[] syllables = Syllable.getRomajiSyllable(on, SYSTEM_KUNREI);
         for (String syllable : syllables) {
             if (recRoma.size() == 0) {
                 romaList.add(syllable);
@@ -142,7 +142,7 @@ public class KanaToRomaji {
             recRoma = convertNihonRecursion(str, index + 1);
         }
 
-        String[] syllables = Syllable.getSyllable(on, SYSTEM_NIHON);
+        String[] syllables = Syllable.getRomajiSyllable(on, SYSTEM_NIHON);
         for (String syllable : syllables) {
             if (recRoma.size() == 0) {
                 romaList.add(syllable);
