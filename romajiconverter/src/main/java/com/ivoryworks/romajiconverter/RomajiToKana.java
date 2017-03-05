@@ -3,16 +3,14 @@ package com.ivoryworks.romajiconverter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RomajiToKana {
-    static final int SYSTEM_HEPBURN = 0;
-    static final int SYSTEM_KUNREI = 1;
-    static final int SYSTEM_NIHON = 2;
+import com.ivoryworks.romajiconverter.RomajiConverter.RomajiSystem;
 
+public class RomajiToKana {
     public static List<String> convert(final String str) {
-        return convert(str, SYSTEM_HEPBURN);
+        return convert(str, RomajiSystem.HEPBURN);
     }
 
-    static List<String> convert(final String romajiStr, final int system) {
+    public static List<String> convert(final String romajiStr, final RomajiSystem system) {
         List<String> kanaStrList = new ArrayList<>();
         if (romajiStr == null || romajiStr.length() == 0) {
             return kanaStrList;
@@ -22,7 +20,7 @@ public class RomajiToKana {
         return kanaStrList;
     }
 
-    private static List<String> converterRecursion(final String romajiStr, int index, int system) {
+    private static List<String> converterRecursion(final String romajiStr, int index, RomajiSystem system) {
         List<String> kanaStrList = new ArrayList<>();
         if (romajiStr.length() == index) {
             return kanaStrList;    // Terminate

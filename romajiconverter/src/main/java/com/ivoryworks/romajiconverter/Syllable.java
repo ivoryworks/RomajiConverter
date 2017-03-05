@@ -1,5 +1,7 @@
 package com.ivoryworks.romajiconverter;
 
+import com.ivoryworks.romajiconverter.RomajiConverter.RomajiSystem;
+
 class Syllable {
     // 直音音節(かな)
     private static final String[] CHOKU_KANA_BASE = {"あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
@@ -75,7 +77,7 @@ class Syllable {
      * @param system Modern system
      * @return
      */
-    static String[] getRomajiSyllable(String key, int system) {
+    static String[] getRomajiSyllable(String key, RomajiSystem system) {
         String[] syllables = getRomajiChokuSyllable(key, system);
         syllables = joinArray(syllables, getRomajiYouSyllable(key, system));
         return syllables;
@@ -87,17 +89,17 @@ class Syllable {
      * @param system Modern system
      * @return
      */
-    static String[] getRomajiChokuSyllable(String key, int system) {
+    static String[] getRomajiChokuSyllable(String key, RomajiSystem system) {
         String[] syllables = getSyllable(CHOKU_KANA_BASE, CHOKU_ROMAJI_BASE, key);
         switch (system) {
-            case KanaToRomaji.SYSTEM_HEPBURN:
+            case HEPBURN:
                 syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF, CHOKU_ROMAJI_DIFF_HEPBURN, key));
                 syllables = joinArray(syllables, getSyllable(MM_KANA_HEPBURN, MM_ROMAJI_HEPBURN, key));
                 break;
-            case KanaToRomaji.SYSTEM_KUNREI:
+            case KUNREI:
                 syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF, CHOKU_ROMAJI_DIFF_KUNREI, key));
                 break;
-            case KanaToRomaji.SYSTEM_NIHON:
+            case NIHON:
                 syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF, CHOKU_ROMAJI_DIFF_NIHON, key));
                 break;
         }
@@ -110,16 +112,16 @@ class Syllable {
      * @param system Modern system
      * @return
      */
-    static String[] getRomajiYouSyllable(String key, int system) {
+    static String[] getRomajiYouSyllable(String key, RomajiSystem system) {
         String[] syllables = getSyllable(YOU_KANA_BASE, YOU_ROMAJI_BASE, key);
         switch (system) {
-            case KanaToRomaji.SYSTEM_HEPBURN:
+            case HEPBURN:
                 syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_HEPBURN, key));
                 break;
-            case KanaToRomaji.SYSTEM_KUNREI:
+            case KUNREI:
                 syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_KUNREI, key));
                 break;
-            case KanaToRomaji.SYSTEM_NIHON:
+            case NIHON:
                 syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_NIHON, key));
                 break;
         }
@@ -132,7 +134,7 @@ class Syllable {
      * @param system Modern system
      * @return
      */
-    static String[] getKanaSyllable(String key, int system) {
+    static String[] getKanaSyllable(String key, RomajiSystem system) {
         String[] syllables = getKanaChokuSyllable(key, system);
         syllables = joinArray(syllables, getKanaYouSyllable(key, system));
         return syllables;
@@ -144,17 +146,17 @@ class Syllable {
      * @param system Modern system
      * @return
      */
-    static String[] getKanaChokuSyllable(String key, int system) {
+    static String[] getKanaChokuSyllable(String key, RomajiSystem system) {
         String[] syllables = getSyllable(CHOKU_ROMAJI_BASE, CHOKU_KANA_BASE, key);
         switch (system) {
-            case RomajiToKana.SYSTEM_HEPBURN:
+            case HEPBURN:
                 syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_HEPBURN, CHOKU_KANA_DIFF, key));
                 syllables = joinArray(syllables, getSyllable(MM_ROMAJI_HEPBURN, MM_KANA_HEPBURN, key));
                 break;
-            case RomajiToKana.SYSTEM_KUNREI:
+            case KUNREI:
                 syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_KUNREI, CHOKU_KANA_DIFF, key));
                 break;
-            case RomajiToKana.SYSTEM_NIHON:
+            case NIHON:
                 syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_NIHON, CHOKU_KANA_DIFF, key));
                 break;
         }
@@ -167,16 +169,16 @@ class Syllable {
      * @param system Modern system
      * @return
      */
-    static String[] getKanaYouSyllable(String key, int system) {
+    static String[] getKanaYouSyllable(String key, RomajiSystem system) {
         String[] syllables = getSyllable(YOU_ROMAJI_BASE, YOU_KANA_BASE, key);
         switch (system) {
-            case RomajiToKana.SYSTEM_HEPBURN:
+            case HEPBURN:
                 syllables = joinArray(syllables, getSyllable(YOU_ROMAJI_DIFF_HEPBURN, YOU_KANA_DIFF, key));
                 break;
-            case RomajiToKana.SYSTEM_KUNREI:
+            case KUNREI:
                 syllables = joinArray(syllables, getSyllable(YOU_ROMAJI_DIFF_KUNREI, YOU_KANA_DIFF, key));
                 break;
-            case RomajiToKana.SYSTEM_NIHON:
+            case NIHON:
                 syllables = joinArray(syllables, getSyllable(YOU_ROMAJI_DIFF_NIHON, YOU_KANA_DIFF, key));
                 break;
         }
@@ -189,7 +191,7 @@ class Syllable {
      * @param system Modern system
      * @return
      */
-    static boolean isRomajiChokuSyllable(String key, int system) {
+    static boolean isRomajiChokuSyllable(String key, RomajiSystem system) {
         String[] out = getKanaChokuSyllable(key, system);
         return (out.length > 0);
     }
@@ -200,7 +202,7 @@ class Syllable {
      * @param system Modern system
      * @return
      */
-    static boolean isRomajiYouSyllable(String key, int system) {
+    static boolean isRomajiYouSyllable(String key, RomajiSystem system) {
         String[] out = getKanaYouSyllable(key, system);
         return (out.length > 0);
     }
