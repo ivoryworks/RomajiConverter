@@ -3,28 +3,24 @@ package com.ivoryworks.romajiconverter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KanaToRomaji {
-    static final int SYSTEM_HEPBURN = 0;
-    static final int SYSTEM_KUNREI = 1;
-    static final int SYSTEM_NIHON = 2;
+import com.ivoryworks.romajiconverter.RomajiConverter.RomajiSystem;
 
+public class KanaToRomaji {
     public static List<String> convert(final String str) {
-        return convert(str, KanaToRomaji.SYSTEM_HEPBURN);
+        return convert(str, RomajiConverter.RomajiSystem.HEPBURN);
     }
 
-    static List<String> convert(final String str, final int system) {
+    public static List<String> convert(final String str, final RomajiSystem system) {
         List<String> strArray = new ArrayList<>();
         switch (system) {
-            case SYSTEM_HEPBURN:
+            case HEPBURN:
                 strArray = converterHepburn(str);
                 break;
-            case SYSTEM_KUNREI:
+            case KUNREI:
                 strArray = converterKunrei(str);
                 break;
-            case SYSTEM_NIHON:
+            case NIHON:
                 strArray = converterNihon(str);
-                break;
-            default:
                 break;
         }
         return strArray;
@@ -58,7 +54,7 @@ public class KanaToRomaji {
             recRoma = convertHepburnRecursion(str, index + 1);
         }
 
-        String[] syllables = Syllable.getRomajiSyllable(on, SYSTEM_HEPBURN);
+        String[] syllables = Syllable.getRomajiSyllable(on, RomajiSystem.HEPBURN);
         for (String syllable : syllables) {
             if (recRoma.size() == 0) {
                 romaList.add(syllable);
@@ -100,7 +96,7 @@ public class KanaToRomaji {
             recRoma = convertKunreiRecursion(str, index + 1);
         }
 
-        String[] syllables = Syllable.getRomajiSyllable(on, SYSTEM_KUNREI);
+        String[] syllables = Syllable.getRomajiSyllable(on, RomajiSystem.KUNREI);
         for (String syllable : syllables) {
             if (recRoma.size() == 0) {
                 romaList.add(syllable);
@@ -142,7 +138,7 @@ public class KanaToRomaji {
             recRoma = convertNihonRecursion(str, index + 1);
         }
 
-        String[] syllables = Syllable.getRomajiSyllable(on, SYSTEM_NIHON);
+        String[] syllables = Syllable.getRomajiSyllable(on, RomajiSystem.NIHON);
         for (String syllable : syllables) {
             if (recRoma.size() == 0) {
                 romaList.add(syllable);
