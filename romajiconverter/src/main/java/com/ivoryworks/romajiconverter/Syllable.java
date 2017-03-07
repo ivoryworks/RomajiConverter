@@ -186,6 +186,28 @@ class Syllable {
     }
 
     /**
+     * 与えた文字列が仮名の直音であるか
+     * @param key Kana syllable
+     * @param system Modern system
+     * @return
+     */
+    static boolean isKanaChokuSyllable(String key, RomajiSystem system) {
+        String[] out = getRomajiSyllable(key, system);
+        return (out.length > 0);
+    }
+
+    /**
+     * 与えた文字列が仮名の拗音であるか
+     * @param key Kana syllable
+     * @param system Modern system
+     * @return
+     */
+    static boolean isKanaYouSyllable(String key, RomajiSystem system) {
+        String[] out = getRomajiYouSyllable(key, system);
+        return (out.length > 0);
+    }
+
+    /**
      * 与えた文字列がローマ字の直音であるか
      * @param key Romaji syllable
      * @param system Modern system

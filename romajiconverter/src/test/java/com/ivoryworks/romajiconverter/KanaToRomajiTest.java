@@ -18,7 +18,10 @@ public class KanaToRomajiTest {
         assertTrue(convertChecker("きっぷ", new String[]{"kippu"}));
 
         // sammpo
-        assertTrue(convertChecker("さんぽ", new String[]{"sampo"}));
+        assertTrue(convertChecker("さんぽ", new String[]{"sampo", "sanpo"}));
+
+        // sha,shu,sho
+        assertTrue(convertChecker("しゃ", new String[]{"sha"}));
     }
 
     /**
@@ -161,8 +164,8 @@ public class KanaToRomajiTest {
         assertTrue(convertChecker("くゎぐゎ", new String[]{"kuwaguwa"}, RomajiSystem.HEPBURN));
 
         // gumma, namba
-        assertTrue(convertChecker("ぐんま", new String[]{"gumma"}, RomajiSystem.HEPBURN));
-        assertTrue(convertChecker("なんば", new String[]{"namba"}, RomajiSystem.HEPBURN));
+        assertTrue(convertChecker("ぐんま", new String[]{"gumma", "gunma"}, RomajiSystem.HEPBURN));
+        assertTrue(convertChecker("なんば", new String[]{"namba", "nanba"}, RomajiSystem.HEPBURN));
     }
 
     /**

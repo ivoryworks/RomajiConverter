@@ -11,178 +11,82 @@ public class KanaToRomaji {
     }
 
     public static List<String> convert(final String str, final RomajiSystem system) {
-        List<String> strArray = new ArrayList<>();
-        switch (system) {
-            case HEPBURN:
-                strArray = converterHepburn(str);
-                break;
-            case KUNREI:
-                strArray = converterKunrei(str);
-                break;
-            case NIHON:
-                strArray = converterNihon(str);
-                break;
-        }
-        return strArray;
-    }
-
-    private static List<String> converterHepburn(final String str) {
         List<String> strList = new ArrayList<>();
         if (str == null || str.length() == 0) {
             return strList;
         }
-        strList = convertHepburnRecursion(str, 0);
+        strList = convertRecursion(str, 0, system);
 
         return strList;
     }
 
-    private static List<String> convertHepburnRecursion(final String str, int index) {
+    private static List<String> convertRecursion(final String kanaStr, int index, RomajiSystem system) {
         List<String> romaList = new ArrayList<>();
-        if (str.length() == index) {
+        if (kanaStr.length() == index) {
             return romaList;    // Terminate
         }
 
-        String on;
-        List<String> recRoma;
-        if (isYouOn(str, index) || isMM(str, index)) {
-            // You-on
-            on = str.substring(index, index + 2);
-            recRoma = convertHepburnRecursion(str, index + 2);
+        List<String> recRomaji = new ArrayList<>();
+        String kanaSyllable;
+        if (isYouOn(kanaStr, index, system)) {
+            // 拗音
+            // 変換音韻の抽出
+            kanaSyllable = kanaStr.substring(index, index + 2);
+            recRomaji.addAll(convertRecursion(kanaStr, index + 2, system));
+            romaList.addAll(createRomajiSyllableList(recRomaji, kanaSyllable, system));
         } else {
-            // Choku-on
-            on = str.substring(index, index + 1);
-            recRoma = convertHepburnRecursion(str, index + 1);
-        }
-
-        String[] syllables = Syllable.getRomajiSyllable(on, RomajiSystem.HEPBURN);
-        for (String syllable : syllables) {
-            if (recRoma.size() == 0) {
-                romaList.add(syllable);
-            } else {
-                for (String childStr : recRoma) {
-                    romaList.add(syllable + childStr);
-                }
+            // 直音
+            // 変換音韻の抽出
+            if (system == RomajiSystem.HEPBURN && isMM(kanaStr, index)) {
+                // ヘボン式に限ったmb,mm,mpの音韻
+                kanaSyllable = kanaStr.substring(index, index + 2);
+                recRomaji.addAll(convertRecursion(kanaStr, index + 2, system));
+                romaList.addAll(createRomajiSyllableList(recRomaji, kanaSyllable, system));
             }
+            // 共通
+            kanaSyllable = kanaStr.substring(index, index + 1);
+            recRomaji.addAll(convertRecursion(kanaStr, index + 1, system));
+            romaList.addAll(createRomajiSyllableList(recRomaji, kanaSyllable, system));
         }
-
         return romaList;
     }
 
-    private static List<String> converterKunrei(String str) {
-        List<String> strList = new ArrayList<>();
-        if (str == null || str.length() == 0) {
-            return strList;
-        }
-        strList = convertKunreiRecursion(str, 0);
-
-        return strList;
-    }
-
-    private static List<String> convertKunreiRecursion(String str, int index) {
+    /**
+     * 仮名の音韻を元にローマ字の音韻リストを作成する
+     * @param recRomaji 連結するローマ字リスト
+     * @param kanaSyllable 仮名文字の音韻
+     * @param system 変換システム
+     * @return
+     */
+    private static List<String> createRomajiSyllableList(List<String> recRomaji, String kanaSyllable, RomajiSystem system) {
         List<String> romaList = new ArrayList<>();
-        if (str.length() == index) {
-            return romaList;    // Terminate
-        }
-
-        String on;
-        List<String> recRoma;
-        if (isYouOn(str, index)) {
-            // You-on
-            on = str.substring(index, index + 2);
-            recRoma = convertKunreiRecursion(str, index + 2);
-        } else {
-            // Choku-on
-            on = str.substring(index, index + 1);
-            recRoma = convertKunreiRecursion(str, index + 1);
-        }
-
-        String[] syllables = Syllable.getRomajiSyllable(on, RomajiSystem.KUNREI);
-        for (String syllable : syllables) {
-            if (recRoma.size() == 0) {
-                romaList.add(syllable);
+        String[] romajiSyllables = Syllable.getRomajiSyllable(kanaSyllable, system);
+        for (String romajiSyllable : romajiSyllables) {
+            if (recRomaji.size() == 0) {
+                romaList.add(romajiSyllable);
             } else {
-                for (String childStr : recRoma) {
-                    romaList.add(syllable + childStr);
+                for (String childStr : recRomaji) {
+                    romaList.add(romajiSyllable + childStr);
                 }
             }
         }
-
         return romaList;
     }
 
-    private static List<String> converterNihon(final String str) {
-        List<String> strList = new ArrayList<>();
-        if (str == null || str.length() == 0) {
-            return strList;
-        }
-        strList = convertNihonRecursion(str, 0);
-
-        return strList;
-    }
-
-    private static List<String> convertNihonRecursion(final String str, int index) {
-        List<String> romaList = new ArrayList<>();
-        if (str.length() == index) {
-            return romaList;    // Terminate
-        }
-
-        String on;
-        List<String> recRoma;
-        if (isYouOn(str, index)) {
-            // You-on
-            on = str.substring(index, index + 2);
-            recRoma = convertNihonRecursion(str, index + 2);
-        } else {
-            // Choku-on
-            on = str.substring(index, index + 1);
-            recRoma = convertNihonRecursion(str, index + 1);
-        }
-
-        String[] syllables = Syllable.getRomajiSyllable(on, RomajiSystem.NIHON);
-        for (String syllable : syllables) {
-            if (recRoma.size() == 0) {
-                romaList.add(syllable);
-            } else {
-                for (String childStr : recRoma) {
-                    romaList.add(syllable + childStr);
-                }
-            }
-        }
-
-        return romaList;
-    }
-
-    private static boolean isYouOn(final String str, int index) {
+    /**
+     * 文字列の指定した位置にある音韻が拗音かどうかを判定する
+     * @param kanaStr 対象文字列
+     * @param index 音韻の位置
+     * @param system 変換タイプ
+     * @return
+     */
+    private static boolean isYouOn(final String kanaStr, int index, RomajiSystem system) {
         // 拗音は2文字必要
-        if ((str.length() - index) < 2) {
+        if ((kanaStr.length() - index) < 2) {
             return false;
         }
-        String c = String.valueOf(str.charAt(index));
-        String c2 = String.valueOf(str.charAt(index + 1));
-        String[] youUpper = {"き", "し", "ち", "に", "ひ", "み", "り", "ぎ", "じ", "ぢ", "び", "ぴ"};
-        for (String yu : youUpper) {
-            if (!yu.equals(c)) {
-                continue;
-            }
-            // You-on lower
-            if (c2.equals("ゃ") || c2.equals("ゅ") || c2.equals("ょ")) {
-                return true;
-            }
-        }
-
-        if ("くゎ".equals(c+c2) || "ぐゎ".equals(c+c2)) {
-            return true;
-        }
-
-        // 「(き)っぷ」ki-ppuなどの判定
-        String[] youEx = {"っ"};
-        for (String yx : youEx) {
-            if (yx.equals(c)) {
-                return true;
-            }
-        }
-
-        return false;
+        String kanaSyllable = kanaStr.substring(index, index + 2);
+        return Syllable.isKanaYouSyllable(kanaSyllable, system);
     }
 
     private static boolean isMM(final String str, int index) {
