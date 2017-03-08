@@ -89,7 +89,7 @@ class Syllable {
      * @param system Modern system
      * @return
      */
-    static String[] getRomajiChokuSyllable(String key, RomajiSystem system) {
+    private static String[] getRomajiChokuSyllable(String key, RomajiSystem system) {
         String[] syllables = getSyllable(CHOKU_KANA_BASE, CHOKU_ROMAJI_BASE, key);
         switch (system) {
             case HEPBURN:
@@ -112,7 +112,7 @@ class Syllable {
      * @param system Modern system
      * @return
      */
-    static String[] getRomajiYouSyllable(String key, RomajiSystem system) {
+    private static String[] getRomajiYouSyllable(String key, RomajiSystem system) {
         String[] syllables = getSyllable(YOU_KANA_BASE, YOU_ROMAJI_BASE, key);
         switch (system) {
             case HEPBURN:
@@ -146,7 +146,7 @@ class Syllable {
      * @param system Modern system
      * @return
      */
-    static String[] getKanaChokuSyllable(String key, RomajiSystem system) {
+    private static String[] getKanaChokuSyllable(String key, RomajiSystem system) {
         String[] syllables = getSyllable(CHOKU_ROMAJI_BASE, CHOKU_KANA_BASE, key);
         switch (system) {
             case HEPBURN:
@@ -169,7 +169,7 @@ class Syllable {
      * @param system Modern system
      * @return
      */
-    static String[] getKanaYouSyllable(String key, RomajiSystem system) {
+    private static String[] getKanaYouSyllable(String key, RomajiSystem system) {
         String[] syllables = getSyllable(YOU_ROMAJI_BASE, YOU_KANA_BASE, key);
         switch (system) {
             case HEPBURN:

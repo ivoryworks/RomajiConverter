@@ -6,11 +6,11 @@ import java.util.List;
 import com.ivoryworks.romajiconverter.RomajiConverter.RomajiSystem;
 
 public class RomajiToKana {
-    public static List<String> convert(final String str) {
+    protected static List<String> convert(final String str) {
         return convert(str, RomajiSystem.HEPBURN);
     }
 
-    public static List<String> convert(final String romajiStr, final RomajiSystem system) {
+    protected static List<String> convert(final String romajiStr, final RomajiSystem system) {
         List<String> kanaStrList = new ArrayList<>();
         if (romajiStr == null || romajiStr.length() == 0) {
             return kanaStrList;
