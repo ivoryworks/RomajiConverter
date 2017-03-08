@@ -8,9 +8,8 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.ivoryworks.romajiconverter.KanaToRomaji;
+import com.ivoryworks.romajiconverter.RomajiConverter;
 import com.ivoryworks.romajiconverter.RomajiConverter.RomajiSystem;
-import com.ivoryworks.romajiconverter.RomajiToKana;
 
 import java.util.List;
 
@@ -51,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
             mCount = count;
             List<String> convertStrings;
             if (mDirection == 0) {
-                convertStrings = KanaToRomaji.convert(charSequence.toString(), mSystem);
+                convertStrings = RomajiConverter.ToRomaji(charSequence.toString(), mSystem);
             } else {
-                convertStrings = RomajiToKana.convert(charSequence.toString(), mSystem);
+                convertStrings = RomajiConverter.ToKana(charSequence.toString(), mSystem);
             }
             String strBuf = "";
             for (String str : convertStrings) {
