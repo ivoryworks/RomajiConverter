@@ -12,6 +12,13 @@ public class SyllableTest {
     @Test
     public void getKanaSyllable() throws Exception {
         String[] outputArray = Syllable.getKanaSyllable("i", RomajiSystem.HEPBURN);
+        assertTrue(outputArray.length == 1);
+        assertEquals(outputArray[0], "い");
+    }
+
+    @Test
+    public void getKanaSyllableEx() throws Exception {
+        String[] outputArray = Syllable.getKanaSyllable("i", RomajiSystem.HEPBURN_EXTEND);
         assertTrue(outputArray.length == 2);
         assertEquals(outputArray[0], "い");
         assertEquals(outputArray[1], "ゐ");
@@ -26,12 +33,30 @@ public class SyllableTest {
 
         // BASEで2つ検出されるケース
         outputArray = Syllable.getRomajiSyllable("え", RomajiSystem.HEPBURN);
+        assertTrue(outputArray.length == 1);
+        assertEquals(outputArray[0], "e");
+
+        // BASEとDIFFで1つずつ検出されるケース
+        outputArray = Syllable.getRomajiSyllable("づ", RomajiSystem.HEPBURN);
+        assertTrue(outputArray.length == 1);
+        assertEquals(outputArray[1], "zu");
+    }
+
+    @Test
+    public void getRomajiSyllableEx() throws Exception {
+        // BASEで1つ検出されるケース
+        String[] outputArray = Syllable.getRomajiSyllable("あ", RomajiSystem.HEPBURN_EXTEND);
+        assertTrue(outputArray.length == 1);
+        assertEquals(outputArray[0], "a");
+
+        // BASEで2つ検出されるケース
+        outputArray = Syllable.getRomajiSyllable("え", RomajiSystem.HEPBURN_EXTEND);
         assertTrue(outputArray.length == 2);
         assertEquals(outputArray[0], "e");
         assertEquals(outputArray[1], "ye");
 
         // BASEとDIFFで1つずつ検出されるケース
-        outputArray = Syllable.getRomajiSyllable("づ", RomajiSystem.HEPBURN);
+        outputArray = Syllable.getRomajiSyllable("づ", RomajiSystem.HEPBURN_EXTEND);
         assertTrue(outputArray.length == 2);
         assertEquals(outputArray[0], "dzu");
         assertEquals(outputArray[1], "zu");
@@ -42,6 +67,32 @@ public class SyllableTest {
         Field chokuKanaBase = Syllable.class.getDeclaredField("CHOKU_KANA_BASE");
         chokuKanaBase.setAccessible(true);
         Field chokuRomajiBase = Syllable.class.getDeclaredField("CHOKU_ROMAJI_BASE");
+        chokuRomajiBase.setAccessible(true);
+
+        Method getSyllable = Syllable.class.getDeclaredMethod("getSyllable", String[].class, String[].class, String.class);
+        getSyllable.setAccessible(true);
+
+        String[] outputArray = (String[]) getSyllable.invoke(null, chokuKanaBase.get(null), chokuRomajiBase.get(null), "あ");
+        assertTrue(outputArray.length == 1);
+        assertEquals(outputArray[0], "a");
+
+        outputArray = (String[]) getSyllable.invoke(null, chokuKanaBase.get(null), chokuRomajiBase.get(null), "え");
+        assertTrue(outputArray.length == 1);
+        assertEquals(outputArray[0], "e");
+
+        outputArray = (String[]) getSyllable.invoke(null, chokuRomajiBase.get(null), chokuKanaBase.get(null), "ka");
+        assertTrue(outputArray.length == 1);
+        assertEquals(outputArray[0], "か");
+
+        outputArray = (String[]) getSyllable.invoke(null, chokuRomajiBase.get(null), chokuKanaBase.get(null), "dzu");
+        assertTrue(outputArray.length == 0);
+    }
+
+    @Test
+    public void getSyllablePrivateEx() throws Exception {
+        Field chokuKanaBase = Syllable.class.getDeclaredField("CHOKU_KANA_BASE_EX");
+        chokuKanaBase.setAccessible(true);
+        Field chokuRomajiBase = Syllable.class.getDeclaredField("CHOKU_ROMAJI_BASE_EX");
         chokuRomajiBase.setAccessible(true);
 
         Method getSyllable = Syllable.class.getDeclaredMethod("getSyllable", String[].class, String[].class, String.class);
@@ -78,6 +129,18 @@ public class SyllableTest {
     }
 
     @Test
+    public void isRomajiChokuSyllableEx() {
+        assertTrue(Syllable.isRomajiChokuSyllable("shi", RomajiSystem.HEPBURN_EXTEND));
+        assertTrue(Syllable.isRomajiChokuSyllable("ji", RomajiSystem.HEPBURN_EXTEND));
+
+        assertTrue(Syllable.isRomajiChokuSyllable("zi", RomajiSystem.KUNREI_EXTEND));
+        assertTrue(Syllable.isRomajiChokuSyllable("hu", RomajiSystem.KUNREI_EXTEND));
+
+        assertTrue(Syllable.isRomajiChokuSyllable("di", RomajiSystem.NIHON_EXTEND));
+        assertTrue(Syllable.isRomajiChokuSyllable("wo", RomajiSystem.NIHON_EXTEND));
+    }
+
+    @Test
     public void isRomajiYouSyllable() {
         assertTrue(Syllable.isRomajiYouSyllable("cha", RomajiSystem.HEPBURN));
         assertTrue(Syllable.isRomajiYouSyllable("jo", RomajiSystem.HEPBURN));
@@ -87,6 +150,18 @@ public class SyllableTest {
 
         assertTrue(Syllable.isRomajiYouSyllable("dya", RomajiSystem.NIHON));
         assertTrue(Syllable.isRomajiYouSyllable("ddi", RomajiSystem.NIHON));
+    }
+
+    @Test
+    public void isRomajiYouSyllableEx() {
+        assertTrue(Syllable.isRomajiYouSyllable("cha", RomajiSystem.HEPBURN_EXTEND));
+        assertTrue(Syllable.isRomajiYouSyllable("jo", RomajiSystem.HEPBURN_EXTEND));
+
+        assertTrue(Syllable.isRomajiYouSyllable("zyo", RomajiSystem.KUNREI_EXTEND));
+        assertTrue(Syllable.isRomajiYouSyllable("zzi", RomajiSystem.KUNREI_EXTEND));
+
+        assertTrue(Syllable.isRomajiYouSyllable("dya", RomajiSystem.NIHON_EXTEND));
+        assertTrue(Syllable.isRomajiYouSyllable("ddi", RomajiSystem.NIHON_EXTEND));
     }
 
     @Test
