@@ -7,7 +7,10 @@ public class RomajiConverter {
     public enum RomajiSystem {
         HEPBURN,
         KUNREI,
-        NIHON
+        NIHON,
+        HEPBURN_EXTEND,
+        KUNREI_EXTEND,
+        NIHON_EXTEND
     }
 
     public static List<String> ToRomaji(String kanaStr, RomajiSystem system) {
