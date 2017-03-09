@@ -39,7 +39,7 @@ public class SyllableTest {
         // BASEとDIFFで1つずつ検出されるケース
         outputArray = Syllable.getRomajiSyllable("づ", RomajiSystem.HEPBURN);
         assertTrue(outputArray.length == 1);
-        assertEquals(outputArray[1], "zu");
+        assertEquals(outputArray[0], "zu");
     }
 
     @Test
@@ -90,28 +90,25 @@ public class SyllableTest {
 
     @Test
     public void getSyllablePrivateEx() throws Exception {
-        Field chokuKanaBase = Syllable.class.getDeclaredField("CHOKU_KANA_BASE_EX");
-        chokuKanaBase.setAccessible(true);
-        Field chokuRomajiBase = Syllable.class.getDeclaredField("CHOKU_ROMAJI_BASE_EX");
-        chokuRomajiBase.setAccessible(true);
+        Field chokuKanaBaseEx = Syllable.class.getDeclaredField("CHOKU_KANA_BASE_EX");
+        chokuKanaBaseEx.setAccessible(true);
+        Field chokuRomajiBaseEx = Syllable.class.getDeclaredField("CHOKU_ROMAJI_BASE_EX");
+        chokuRomajiBaseEx.setAccessible(true);
 
         Method getSyllable = Syllable.class.getDeclaredMethod("getSyllable", String[].class, String[].class, String.class);
         getSyllable.setAccessible(true);
 
-        String[] outputArray = (String[]) getSyllable.invoke(null, chokuKanaBase.get(null), chokuRomajiBase.get(null), "あ");
+        String[] outputArray = (String[]) getSyllable.invoke(null, chokuKanaBaseEx.get(null), chokuRomajiBaseEx.get(null), "あ");
+        assertTrue(outputArray.length == 0);
+
+        outputArray = (String[]) getSyllable.invoke(null, chokuKanaBaseEx.get(null), chokuRomajiBaseEx.get(null), "え");
         assertTrue(outputArray.length == 1);
-        assertEquals(outputArray[0], "a");
+        assertEquals(outputArray[0], "ye");
 
-        outputArray = (String[]) getSyllable.invoke(null, chokuKanaBase.get(null), chokuRomajiBase.get(null), "え");
-        assertTrue(outputArray.length == 2);
-        assertEquals(outputArray[0], "e");
-        assertEquals(outputArray[1], "ye");
+        outputArray = (String[]) getSyllable.invoke(null, chokuRomajiBaseEx.get(null), chokuKanaBaseEx.get(null), "ka");
+        assertTrue(outputArray.length == 0);
 
-        outputArray = (String[]) getSyllable.invoke(null, chokuRomajiBase.get(null), chokuKanaBase.get(null), "ka");
-        assertTrue(outputArray.length == 1);
-        assertEquals(outputArray[0], "か");
-
-        outputArray = (String[]) getSyllable.invoke(null, chokuRomajiBase.get(null), chokuKanaBase.get(null), "dzu");
+        outputArray = (String[]) getSyllable.invoke(null, chokuRomajiBaseEx.get(null), chokuKanaBaseEx.get(null), "dzu");
         assertTrue(outputArray.length == 1);
         assertEquals(outputArray[0], "づ");
     }
