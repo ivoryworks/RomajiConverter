@@ -37,7 +37,7 @@ public class KanaToRomaji {
         } else {
             // 直音
             // 変換音韻の抽出
-            if (system == RomajiSystem.HEPBURN && isMM(kanaStr, index)) {
+            if ((system == RomajiSystem.HEPBURN || system == RomajiSystem.HEPBURN_EXTEND) && isMM(kanaStr, index)) {
                 // ヘボン式に限ったmb,mm,mpの音韻
                 kanaSyllable = kanaStr.substring(index, index + 2);
                 recRomaji.addAll(convertRecursion(kanaStr, index + 2, system));
