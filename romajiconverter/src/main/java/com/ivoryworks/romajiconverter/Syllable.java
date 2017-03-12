@@ -11,7 +11,7 @@ class Syllable {
             "ら", "り", "る", "れ", "ろ", "わ", "ん",
             "が", "ぎ", "ぐ", "げ", "ご", "ざ", "ず", "ぜ", "ぞ",
             "だ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ",
-            "ぱ", "ぴ", "ぷ", "ぺ", "ぽ", "え", "づ"};
+            "ぱ", "ぴ", "ぷ", "ぺ", "ぽ"};
     // 直音音節(ローマ字)
     private static final String[] CHOKU_ROMAJI_BASE = {"a", "i", "u", "e", "o", "ka", "ki", "ku", "ke", "ko",
             "sa", "su", "se", "so", "ta", "te", "to",
@@ -20,12 +20,23 @@ class Syllable {
             "ra", "ri", "ru", "re", "ro", "wa", "n",
             "ga", "gi", "gu", "ge", "go", "za", "zu", "ze", "zo",
             "da", "de", "do", "ba", "bi", "bu", "be", "bo",
-            "pa", "pi", "pu", "pe", "po", "ye", "dzu"};
+            "pa", "pi", "pu", "pe", "po"};
+    // 直音音節(かな拡張)
+    private static final String[] CHOKU_KANA_BASE_EX = {"え", "づ"};
+    // 直音音節(ローマ字拡張)
+    private static final String[] CHOKU_ROMAJI_BASE_EX = {"ye", "dzu"};
+
     // 直音音節(差分)
-    private static final String[] CHOKU_KANA_DIFF = {"し", "じ", "ち", "つ", "ぢ", "づ", "ふ", "ゐ", "ゑ", "を"};
-    private static final String[] CHOKU_ROMAJI_DIFF_HEPBURN = {"shi", "ji", "chi", "tsu", "ji", "zu", "fu", "i", "e", "o"};
-    private static final String[] CHOKU_ROMAJI_DIFF_KUNREI = {"si", "zi", "ti", "tu", "zi", "zu", "hu", "i", "e", "o"};
-    private static final String[] CHOKU_ROMAJI_DIFF_NIHON = {"si", "zi", "ti", "tu", "di", "du", "hu", "wi", "we", "wo"};
+    private static final String[] CHOKU_KANA_DIFF = {"し", "じ", "ち", "つ", "ぢ", "づ", "ふ", "を"};
+    private static final String[] CHOKU_ROMAJI_DIFF_HEPBURN = {"shi", "ji", "chi", "tsu", "ji", "zu", "fu", "o"};
+    private static final String[] CHOKU_ROMAJI_DIFF_KUNREI = {"si", "zi", "ti", "tu", "zi", "zu", "hu", "o"};
+    private static final String[] CHOKU_ROMAJI_DIFF_NIHON = {"si", "zi", "ti", "tu", "di", "du", "hu", "wo"};
+    // 直音音節(差分拡張)
+    private static final String[] CHOKU_KANA_DIFF_EX = {"ゐ", "ゑ"};
+    private static final String[] CHOKU_ROMAJI_DIFF_HEPBURN_EX = {"i", "e"};
+    private static final String[] CHOKU_ROMAJI_DIFF_KUNREI_EX = {"i", "e"};
+    private static final String[] CHOKU_ROMAJI_DIFF_NIHON_EX = {"wi", "we"};
+
 
     // 拗音音節(かな)
     private static final String[] YOU_KANA_BASE = {"きゃ", "きゅ", "きょ", "にゃ", "にゅ", "にょ",
@@ -92,13 +103,25 @@ class Syllable {
     private static String[] getRomajiChokuSyllable(String key, RomajiSystem system) {
         String[] syllables = getSyllable(CHOKU_KANA_BASE, CHOKU_ROMAJI_BASE, key);
         switch (system) {
+            case HEPBURN_EXTEND:
+                syllables = joinArray(syllables, getSyllable(CHOKU_KANA_BASE_EX, CHOKU_ROMAJI_BASE_EX, key));
+                syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF_EX, CHOKU_ROMAJI_DIFF_HEPBURN_EX, key));
+                // throw
             case HEPBURN:
                 syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF, CHOKU_ROMAJI_DIFF_HEPBURN, key));
                 syllables = joinArray(syllables, getSyllable(MM_KANA_HEPBURN, MM_ROMAJI_HEPBURN, key));
                 break;
+            case KUNREI_EXTEND:
+                syllables = joinArray(syllables, getSyllable(CHOKU_KANA_BASE_EX, CHOKU_ROMAJI_BASE_EX, key));
+                syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF_EX, CHOKU_ROMAJI_DIFF_KUNREI_EX, key));
+                // throw
             case KUNREI:
                 syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF, CHOKU_ROMAJI_DIFF_KUNREI, key));
                 break;
+            case NIHON_EXTEND:
+                syllables = joinArray(syllables, getSyllable(CHOKU_KANA_BASE_EX, CHOKU_ROMAJI_BASE_EX, key));
+                syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF_EX, CHOKU_ROMAJI_DIFF_NIHON_EX, key));
+                // throw
             case NIHON:
                 syllables = joinArray(syllables, getSyllable(CHOKU_KANA_DIFF, CHOKU_ROMAJI_DIFF_NIHON, key));
                 break;
@@ -115,12 +138,18 @@ class Syllable {
     private static String[] getRomajiYouSyllable(String key, RomajiSystem system) {
         String[] syllables = getSyllable(YOU_KANA_BASE, YOU_ROMAJI_BASE, key);
         switch (system) {
+            case HEPBURN_EXTEND:
+                // throw
             case HEPBURN:
                 syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_HEPBURN, key));
                 break;
+            case KUNREI_EXTEND:
+                // throw
             case KUNREI:
                 syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_KUNREI, key));
                 break;
+            case NIHON_EXTEND:
+                // throw
             case NIHON:
                 syllables = joinArray(syllables, getSyllable(YOU_KANA_DIFF, YOU_ROMAJI_DIFF_NIHON, key));
                 break;
@@ -149,13 +178,25 @@ class Syllable {
     private static String[] getKanaChokuSyllable(String key, RomajiSystem system) {
         String[] syllables = getSyllable(CHOKU_ROMAJI_BASE, CHOKU_KANA_BASE, key);
         switch (system) {
+            case HEPBURN_EXTEND:
+                syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_BASE_EX, CHOKU_KANA_BASE_EX, key));
+                syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_HEPBURN_EX, CHOKU_KANA_DIFF_EX, key));
+                // throw
             case HEPBURN:
                 syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_HEPBURN, CHOKU_KANA_DIFF, key));
                 syllables = joinArray(syllables, getSyllable(MM_ROMAJI_HEPBURN, MM_KANA_HEPBURN, key));
                 break;
+            case KUNREI_EXTEND:
+                syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_BASE_EX, CHOKU_KANA_BASE_EX, key));
+                syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_KUNREI_EX, CHOKU_KANA_DIFF_EX, key));
+                // throw
             case KUNREI:
                 syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_KUNREI, CHOKU_KANA_DIFF, key));
                 break;
+            case NIHON_EXTEND:
+                syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_BASE_EX, CHOKU_KANA_BASE_EX, key));
+                syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_NIHON_EX, CHOKU_KANA_DIFF_EX, key));
+                // throw
             case NIHON:
                 syllables = joinArray(syllables, getSyllable(CHOKU_ROMAJI_DIFF_NIHON, CHOKU_KANA_DIFF, key));
                 break;
@@ -172,12 +213,18 @@ class Syllable {
     private static String[] getKanaYouSyllable(String key, RomajiSystem system) {
         String[] syllables = getSyllable(YOU_ROMAJI_BASE, YOU_KANA_BASE, key);
         switch (system) {
+            case HEPBURN_EXTEND:
+                // throw
             case HEPBURN:
                 syllables = joinArray(syllables, getSyllable(YOU_ROMAJI_DIFF_HEPBURN, YOU_KANA_DIFF, key));
                 break;
+            case KUNREI_EXTEND:
+                // throw
             case KUNREI:
                 syllables = joinArray(syllables, getSyllable(YOU_ROMAJI_DIFF_KUNREI, YOU_KANA_DIFF, key));
                 break;
+            case NIHON_EXTEND:
+                // throw
             case NIHON:
                 syllables = joinArray(syllables, getSyllable(YOU_ROMAJI_DIFF_NIHON, YOU_KANA_DIFF, key));
                 break;

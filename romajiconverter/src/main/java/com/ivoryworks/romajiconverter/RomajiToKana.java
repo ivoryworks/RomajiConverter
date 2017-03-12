@@ -15,12 +15,15 @@ public class RomajiToKana {
         if (romajiStr == null || romajiStr.length() == 0) {
             return kanaStrList;
         }
-        kanaStrList = converterRecursion(romajiStr, 0, system);
+        try {
+            kanaStrList = converterRecursion(romajiStr, 0, system);
+        } catch (SyllableException e) {
+        }
 
         return kanaStrList;
     }
 
-    private static List<String> converterRecursion(final String romajiStr, int index, RomajiSystem system) {
+    private static List<String> converterRecursion(final String romajiStr, int index, RomajiSystem system) throws SyllableException {
         List<String> kanaStrList = new ArrayList<>();
         if (romajiStr.length() == index) {
             return kanaStrList;    // Terminate
@@ -52,6 +55,13 @@ public class RomajiToKana {
             }
         }
 
+        if (kanaStrList.isEmpty()) {
+            throw new SyllableException();
+        }
+
         return kanaStrList;
+    }
+
+    private static class SyllableException extends Exception {
     }
 }
